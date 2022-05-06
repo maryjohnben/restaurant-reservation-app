@@ -3,6 +3,9 @@ import { useHistory } from "react-router";
 import { createReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import InputForm from "./InputForm";
+import InvalidDateTime from "../layout/InvalidDateTime";
+import validateTuesday from '../utils/validateTuesday'
+import validateInPast from '../utils/validateInPast'
 
 export default function NewReservations() {
     const initial = {
@@ -15,10 +18,11 @@ export default function NewReservations() {
   }
   const [formData, setFormData] = useState({...initial})
   const [submitted, setSubmitted] = useState(false)
-    //state for any errors that may occur from the API.
-    const [reservationsError, setReservationsError] = useState(null);
+  const [timeError, setTimeError] = useState([])
+  //state for any errors that may occur from the API.
+  const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory()
-
+  
   const submitHandler = (event) => {
     event.preventDefault();
     setSubmitted(true);
@@ -26,29 +30,44 @@ export default function NewReservations() {
   const cancelHandler = () => {
     history.go(-1)
   }
+
+  const isTuesday = validateTuesday(formData.reservation_date)
+  const isPast = validateInPast(formData.reservation_date, formData.reservation_time)
   
-  //creating new reservation
-  useEffect(()=>{
-    if(submitted) {
-      const ac = new AbortController();
-      setReservationsError(null)
-      async function create() {
-        try {
+// console.log('is tuesday', isTuesday)
+// console.log('is past', isPast)
+
+//creating new reservation
+useEffect(()=>{
+  if(submitted) {
+    setTimeError([])
+    setSubmitted(false)
+    if(isTuesday) setTimeError(arr => [...arr, isTuesday])
+    if(isPast) setTimeError(arr => [...arr, isPast])
+    if(isTuesday || isPast) return;
+    const ac = new AbortController();
+    setReservationsError(null)
+    // setTimeError(null);
+    async function create() {
+      try {
         const response = await createReservation(formData, ac.signal)
         history.push(`/dashboard?date=${formData.reservation_date}`)
         return response;
-        } catch(error) {
-          setReservationsError(error)
-        } 
-      }
-      create();
-      return () => ac.abort()
+      } catch(error) {
+        setReservationsError(error)
+      } 
     }
-  }, [submitted, formData, history])
+    create();
+    return () => ac.abort()
+  }
+}, [submitted, formData, history, isPast, isTuesday])
 
-  return (
-    <>
+// console.log('timeerror',timeError)
+// console.log('submit',submitted)
+return (
+  <>
     <ErrorAlert error={reservationsError} />
+    <InvalidDateTime error={timeError} />
     <InputForm 
     formData={formData}
     setFormData={setFormData}
