@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { createReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 import InputForm from "./InputForm";
 
 export default function NewReservations() {
@@ -9,10 +10,13 @@ export default function NewReservations() {
       last_name : '',
       mobile_number: '',
       reservation_date: '',
-      people: '',
+      reservation_time: '',
+      people: 0,
   }
   const [formData, setFormData] = useState({...initial})
   const [submitted, setSubmitted] = useState(false)
+    //state for any errors that may occur from the API.
+    const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory()
 
   const submitHandler = (event) => {
@@ -22,21 +26,29 @@ export default function NewReservations() {
   const cancelHandler = () => {
     history.go(-1)
   }
-
+  
   //creating new reservation
   useEffect(()=>{
     if(submitted) {
+      const ac = new AbortController();
+      setReservationsError(null)
       async function create() {
-        const abort = new AbortController();
-        const response = await createReservation(formData, abort.signal)
+        try {
+        const response = await createReservation(formData, ac.signal)
+        history.push(`/dashboard?date=${formData.reservation_date}`)
         return response;
+        } catch(error) {
+          setReservationsError(error)
+        } 
       }
       create();
+      return () => ac.abort()
     }
-  }, [submitted, formData])
+  }, [submitted, formData, history])
 
   return (
     <>
+    <ErrorAlert error={reservationsError} />
     <InputForm 
     formData={formData}
     setFormData={setFormData}

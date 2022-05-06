@@ -84,7 +84,7 @@ export default function InputForm({
       <label htmlFor="people">Number of guests</label>
       <input
       className="form-control"
-        type="text"
+        type="number"
         id="people"
         name="people"
         required={true}
