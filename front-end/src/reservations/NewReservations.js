@@ -5,7 +5,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import InputForm from "./InputForm";
 import InvalidDateTime from "../layout/InvalidDateTime";
 import validateTuesday from '../utils/validateTuesday'
-import validateInPast from '../utils/validateInPast'
+import validateInPast from '../utils/validateInPastAndClosed'
 
 export default function NewReservations() {
     const initial = {
