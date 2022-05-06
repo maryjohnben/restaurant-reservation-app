@@ -15,7 +15,7 @@ import ReservationTable from "./ReservationTable";
 function Dashboard() {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  // const [date, setDate] = useState(today())
+
   
   //hook to pull date query from the url if there is no action present then date is defaulted to today()
   const query = useQuery();
