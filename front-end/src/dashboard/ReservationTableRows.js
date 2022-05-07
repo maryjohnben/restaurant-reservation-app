@@ -18,7 +18,7 @@ export default function ReservationTableRows(
     //   };
     return (
         <tr key={reservation.reservation_id}>
-      <th scope="row">{reservation.reservation_id}</th>
+      <th scope="row"></th>
       <td>{`${reservation.last_name}, ${reservation.first_name}`}</td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>

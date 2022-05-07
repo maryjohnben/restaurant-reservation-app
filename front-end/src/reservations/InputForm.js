@@ -37,7 +37,7 @@ export default function InputForm({
       className="form-control"
         type="text"
         id="last_name"
-        name="last_name"
+        name='last_name'
         required={true}
         onChange={handleChange}
         value={formData.last_name}
@@ -87,16 +87,17 @@ export default function InputForm({
         type="number"
         id="people"
         name="people"
+        min={1}
         required={true}
         onChange={handleChange}
         value={formData.people}
       ></input>
       </div>
-      <button onClick={cancelHandler} type="button" className="btn btn-secondary">
+      <button onClick={cancelHandler} type="cancel" className="btn btn-secondary">
         Cancel
       </button>
       <button
-        type="submit"
+        type='submit'
         className="btn btn-primary"
         style={{ margin: "3px" }}
       >

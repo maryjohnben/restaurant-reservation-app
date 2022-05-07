@@ -23,7 +23,7 @@ function Dashboard() {
   if(!date) {
     date = today()
   }
-  console.log(date)
+  // console.log(date)
   
   useEffect(loadDashboard, [date]);
   
@@ -38,7 +38,7 @@ function Dashboard() {
     return () => abortController.abort();
   }
   
-  console.log(reservations)
+  // console.log(reservations)
   return (
     <main>
       <h1>Dashboard</h1>

@@ -22,19 +22,20 @@ const hasProperties = hasRequiredProperties(
   "people"
 );
 
-//checks if any fields entered are valid meaning already existing in the table
+//checks if any fields entered are invalid meaning already existing in the table
 const VALID_PROPERTIES = [
   "first_name",
   "last_name",
   "mobile_number",
   "reservation_date",
-  "reservation_time",
   "people",
+  "reservation_time",
   "status",
   "reservation_id",
   "created_at",
   "updated_at",
 ];
+
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
@@ -56,23 +57,22 @@ function hasOnlyValidProperties(req, res, next) {
 function isInteger(req, res, next) {
   let { people } = req.body.data;
   people = Number(people);
-  if (!Number.isInteger(people)) {
-    next({
+  if (people < 1 || !Number.isInteger(people)) {
+    return next({
       status: 400,
-      message: "Input for 'people' is not a valid number",
+      message:
+        "Input for 'people' should be greater than zero and must be a valid number.",
     });
-  } else {
-    next();
   }
+  next();
 }
-
 
 //check if date is in valid format
 function isDateFormatValid(req, res, next) {
   const { reservation_date } = req.body.data;
   const validFormat = /[0-9]{4}-[0-9]{2}-[0-9]{2}/;
   if (!validFormat.test(reservation_date)) {
-    next({
+    return next({
       status: 400,
       message: `reservation_date ${reservation_date} is not valid`,
     });
@@ -85,7 +85,7 @@ function isTimeFormatValid(req, res, next) {
   const { reservation_time } = req.body.data;
   const validFormat = /[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}/;
   if (!validFormat.test(reservation_time)) {
-    next({
+    return next({
       status: 400,
       message: `reservation_time ${reservation_time} is not valid`,
     });
@@ -99,27 +99,28 @@ function isDatePast(req, res, next) {
   let today = new Date();
   let day = new Date(`${reservation_date} ${reservation_time}`);
   if (today > day) {
-    next({
+    return next({
       status: 400,
       message: `Date for reservation must be in the future. Please select a future date.`,
     });
   }
-  console.log(day.getHours())
-  if(day.getHours() <= 10 || (day.getHours() === 10 && day.getMinutes < 30)) {
-return next({
-  status: 400,
-  message: 'Restaurant will not open until 10:30AM. Please reserve a later time'
-})
-  }
-  if(day.getHours() > 21 || (day.getHours() === 21 && day.getMinutes > 30)) {
-    return next ({
+  console.log(day.getHours());
+  if (day.getHours() <= 10 || (day.getHours() === 10 && day.getMinutes < 30)) {
+    return next({
       status: 400,
-      message: 'Restaurant closes at 10:30PM and last time available for reservation is 9.30PM. Please pick another time.'
-    })
+      message:
+        "Restaurant will not open until 10:30AM. Please reserve a later time",
+    });
   }
-    next();
+  if (day.getHours() > 21 || (day.getHours() === 21 && day.getMinutes > 30)) {
+    return next({
+      status: 400,
+      message:
+        "Restaurant closes at 10:30PM and last time available for reservation is 9.30PM. Please pick another time.",
+    });
+  }
+  next();
 }
-
 
 function isTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
@@ -130,15 +131,13 @@ function isTuesday(req, res, next) {
       message: "Restaurant is closed on Tuesday. Please select another day.",
     });
   }
-    next();
+  next();
 }
-
 
 async function create(req, res, next) {
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
-
 
 
 module.exports = {

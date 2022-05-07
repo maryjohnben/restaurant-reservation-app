@@ -11,7 +11,7 @@ export default function ReservationTable({
         key={reservation.reservation_id}
         />
     ));
-console.log(rows)
+// console.log(rows)
     return (
         <table className="table">
   <thead className="thead-dark">
@@ -22,7 +22,7 @@ console.log(rows)
       <th scope="col">Date</th>
       <th scope="col">Time</th>
       <th scope="col">People</th>
-      <th scope="col">Status</th>
+      {/* <th scope="col">Status</th> */}
     </tr>
   </thead>
   <tbody>

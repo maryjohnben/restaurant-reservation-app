@@ -36,9 +36,8 @@ async function fetchJson(url, options, onCancel) {
     if (response.status === 204) {
       return null;
     }
-
     const payload = await response.json();
-
+    
     if (payload.error) {
       return Promise.reject({ message: payload.error });
     }
@@ -77,7 +76,18 @@ export async function createReservation(reservation, signal) {
     body: JSON.stringify({data: reservation}),
     signal,
   }
-  return await fetchJson(url, options, reservation)
+  return await fetchJson(url, options, [])
+}
+
+export async function createTable(table, signal) {
+  const url = `${API_BASE_URL}/tables`
+  const options = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({data: table}),
+    signal,
+  }
+  return await fetchJson(url, options, table)
 }
 
 //cancelling reservation
