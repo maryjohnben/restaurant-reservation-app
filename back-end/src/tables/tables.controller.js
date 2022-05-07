@@ -21,10 +21,10 @@ function isTableNameTwoCharacters(req,res,next) {
 }
 //checks if input in people is integer and greater than 0
 function isInteger(req, res, next) {
-    let { capactity } = req.body.data;
-    capactity = Number(capactity);
-    if (!Number.isInteger(capactity)) {
-      next({
+    let { capacity } = req.body.data;
+    capacity = Number(capacity);
+    if (!Number.isInteger(capacity)) {
+      return next({
         status: 400,
         message: "Input for capacity must be a valid number.",
       });
@@ -33,11 +33,11 @@ function isInteger(req, res, next) {
   }
 
 async function create(req,res,next) {
-    const data = await service.create(req.data.body)
+    const data = await service.create(req.body.data)
     res.status(201).json({data})
 }
 
 module.exports={
     list: [asyncErrorBoundary(list)],
-    create:[isInteger, isTableNameTwoCharacters, hasProperties, asyncErrorBoundary(create)],
+    create:[hasProperties, isTableNameTwoCharacters, isInteger, asyncErrorBoundary(create)],
 }
