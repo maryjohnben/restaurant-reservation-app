@@ -5,7 +5,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import InputForm from "./InputForm";
 import InvalidDateTime from "../layout/InvalidDateTime";
 import validateTuesday from '../utils/validateTuesday'
-import validateInPast from '../utils/validateInPast'
+import validateInPast from '../utils/validateInPastAndClosed'
 
 export default function NewReservations() {
     const initial = {
@@ -34,8 +34,8 @@ export default function NewReservations() {
   const isTuesday = validateTuesday(formData.reservation_date)
   const isPast = validateInPast(formData.reservation_date, formData.reservation_time)
   
-// console.log('is tuesday', isTuesday)
-// console.log('is past', isPast)
+console.log('is tuesday', isTuesday)
+console.log('is past', isPast)
 
 //creating new reservation
 useEffect(()=>{

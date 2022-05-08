@@ -103,22 +103,36 @@ function isDatePast(req, res, next) {
       status: 400,
       message: `Date for reservation must be in the future. Please select a future date.`,
     });
-  } else {
-    next();
   }
+  console.log(day.getHours())
+  if(day.getHours() <= 10 || (day.getHours() === 10 && day.getMinutes < 30)) {
+return next({
+  status: 400,
+  message: 'Restaurant will not open until 10:30AM. Please reserve a later time'
+})
+  }
+  if(day.getHours() > 21 || (day.getHours() === 21 && day.getMinutes > 30)) {
+    return next ({
+      status: 400,
+      message: 'Restaurant closes at 10:30PM and last time available for reservation is 9.30PM. Please pick another time.'
+    })
+  }
+    next();
 }
+
+
 function isTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
   let day = new Date(reservation_date);
   if (day.getUTCDay() === 2) {
-    next({
+    return next({
       status: 400,
       message: "Restaurant is closed on Tuesday. Please select another day.",
     });
-  } else {
-    next();
   }
+    next();
 }
+
 
 async function create(req, res, next) {
   const data = await service.create(req.body.data);
