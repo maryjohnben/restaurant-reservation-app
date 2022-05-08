@@ -53,7 +53,7 @@ function hasOnlyValidProperties(req, res, next) {
   next();
 }
 //checks if input in people is integer and greater than 0
-function isANumber(req, res, next) {
+function isInteger(req, res, next) {
   let { people } = req.body.data;
   people = Number(people);
   if (!Number.isInteger(people)) {
@@ -93,10 +93,39 @@ function isTimeFormatValid(req, res, next) {
     next();
   }
 }
+
+function isDatePast(req, res, next) {
+  const { reservation_date, reservation_time } = req.body.data;
+  let today = new Date();
+  let day = new Date(`${reservation_date} ${reservation_time}`);
+  if (today > day) {
+    next({
+      status: 400,
+      message: `Date for reservation must be in the future. Please select a future date.`,
+    });
+  } else {
+    next();
+  }
+}
+function isTuesday(req, res, next) {
+  const { reservation_date } = req.body.data;
+  let day = new Date(reservation_date);
+  if (day.getUTCDay() === 2) {
+    next({
+      status: 400,
+      message: "Restaurant is closed on Tuesday. Please select another day.",
+    });
+  } else {
+    next();
+  }
+}
+
 async function create(req, res, next) {
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
+
+
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
@@ -105,7 +134,9 @@ module.exports = {
     hasProperties,
     isDateFormatValid,
     isTimeFormatValid,
-    isANumber,
+    isInteger,
+    isTuesday,
+    isDatePast,
     asyncErrorBoundary(create),
   ],
 };
