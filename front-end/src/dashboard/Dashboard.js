@@ -3,7 +3,7 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
-import ReservationDisplay from "./ReservationButton";
+import ReservationButton from "./ReservationButton";
 import ReservationTable from "./ReservationTable";
 
 /**
@@ -46,7 +46,7 @@ function Dashboard() {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <ReservationDisplay date={date} />
+      <ReservationButton date={date} />
       <ReservationTable reservations={reservations} />
     </main>
   );
