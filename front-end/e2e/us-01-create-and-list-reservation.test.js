@@ -33,10 +33,10 @@ describe("US-01 - Create and list reservations - E2E", () => {
 
   describe("/reservations/new page", () => {
     test("filling and submitting form creates a new reservation and then displays the dashboard for the reservation date", async () => {
-      // const lastName = Date.now().toString(10);
+      const lastName = Date.now().toString(10);
 
       await page.type("input[name=first_name]", "James");
-      await page.type("input[name=last_name]", 'Franco');
+      await page.type("input[name=last_name]", lastName);
       await page.type("input[name=mobile_number]", "800-555-1212");
       await page.type("input[name=reservation_date]", "01012035");
       await page.type("input[name=reservation_time]", "1330");
@@ -50,7 +50,7 @@ describe("US-01 - Create and list reservations - E2E", () => {
       await Promise.all([
         page.click("[type=submit]"),
         page.waitForNavigation({ waitUntil: "networkidle2" }),
-        {waitUntil: 'load'}
+        // {waitUntil: 'load'}
       ]);
 
       await page.screenshot({
@@ -59,7 +59,7 @@ describe("US-01 - Create and list reservations - E2E", () => {
       });
       
       
-      await expect(page).toMatch('James');
+      await expect(page).toMatch(lastName);
     });
 
     test("canceling form returns to previous page", async () => {
