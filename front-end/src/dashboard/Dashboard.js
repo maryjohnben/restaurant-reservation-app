@@ -50,19 +50,24 @@ function Dashboard() {
       {/* </div> */}
       <div className="row">
         <div className="table-responsive col-md-6">
-        <h4 className="d-flex justify-content-center">Reservations for {date}</h4>
+          <h4 className="d-flex justify-content-center">
+            Reservations for {date}
+          </h4>
           <ErrorAlert error={reservationsError} />
           <ErrorAlert error={tablesErrors} />
-          <div className="d-flex justify-content-around">
+          <div>
             <ReservationButton date={date} />
           </div>
           <ReservationTable reservations={reservations} />
         </div>
-        <div
-          className="table-responsive col-md-6"
-          style={{ marginTop: "0px" }}
-        >
-          <h4 className="d-flex justify-content-center" style={{ marginBottom: "62px" }}> Assign Table</h4>
+        <div className="table-responsive col-md-6" style={{ marginTop: "0px" }}>
+          <h4
+            className="d-flex justify-content-center"
+            style={{ marginBottom: "62px" }}
+          >
+            {" "}
+            Assign Table
+          </h4>
           <TableDisplay tables={tables} />
         </div>
       </div>

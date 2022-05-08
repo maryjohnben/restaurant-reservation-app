@@ -87,7 +87,7 @@ export async function createTable(table, signal) {
     body: JSON.stringify({data: table}),
     signal,
   }
-  return await fetchJson(url, options, table)
+  return await fetchJson(url, options, [])
 }
 
 //cancelling reservation
@@ -100,6 +100,15 @@ export async function cancelReservation(id, signal) {
   }
   return await fetchJson(url, options, {})
 }
+export async function readReservation(reservation_id,signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  const options = {
+    method: "GET",
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options, []);
+}
 
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`;
@@ -109,4 +118,16 @@ export async function listTables(signal) {
     signal,
   };
   return await fetchJson(url, options, []);
+}
+
+//updates table status between free and ocuupied
+export async function updateTableStatus(table_id, reservation_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({data: {reservation_id: reservation_id}}),
+    signal,
+  };
+  return await fetchJson(url, options, {});
 }

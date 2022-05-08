@@ -16,12 +16,14 @@ export default function TableDisplayRow(
     //       return await deleteDeck(id, abortController.signal);
     //     }
     //   };
+
     return (
         <tr key={table.table_id}>
       <td>{table.table_id}</td>
       <td>{table.table_name}</td>
       <td>{table.capacity}</td>
-      <td>{table.occupied}</td>
+      <td data-table-id-status={`${table.table_id}`}>{table.occupied === false? 'Free': 'Occupied'}
+      </td>
         </tr>
     )
 }
