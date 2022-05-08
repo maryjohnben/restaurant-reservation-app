@@ -105,18 +105,18 @@ function isDatePast(req, res, next) {
     });
   }
   console.log(day.getHours());
-  if (day.getHours() <= 10 || (day.getHours() === 10 && day.getMinutes < 30)) {
+  if (day.getHours() < 10 || (day.getHours() === 10 && day.getMinutes() < 30)) {
     return next({
       status: 400,
       message:
-        "Restaurant will not open until 10:30AM. Please reserve a later time",
+        "Restaurant will not open until 10:30 AM. Please reserve a later time.",
     });
   }
-  if (day.getHours() > 21 || (day.getHours() === 21 && day.getMinutes > 30)) {
+  if (day.getHours() > 21 || (day.getHours() === 21 && day.getMinutes() > 30)) {
     return next({
       status: 400,
       message:
-        "Restaurant closes at 10:30PM and last time available for reservation is 9.30PM. Please pick another time.",
+        "Restaurant closes at 10:30 PM and last time available for reservation is 9:30 PM. Please pick another time.",
     });
   }
   next();

@@ -24,7 +24,7 @@ export default function ReservationTableRows(
       <td>{reservation.reservation_time}</td>
       <td>{reservation.reservation_date}</td>
       <td>{reservation.people}</td>
-      {/* <td>placeholder</td>
+      {/* <td>placeholder</td> */}
       <td>
           <Link to={`/reservations/${reservation.reservation_id}/seat`}>
             <button 
@@ -34,7 +34,7 @@ export default function ReservationTableRows(
             </button>
           </Link>
         </td>
-      <td>
+      {/* <td>
         <Link to={`/reservations/${reservation.reservation_id}/edit`}>
           <button 
           type="button" 

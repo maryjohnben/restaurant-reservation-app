@@ -20,7 +20,7 @@ export default function NewReservations() {
   const [submitted, setSubmitted] = useState(false)
   const [timeError, setTimeError] = useState([])
   //state for any errors that may occur from the API.
-  const [reservationsError, setReservationsError] = useState('');
+  const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory()
   
   const submitHandler = (event) => {

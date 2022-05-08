@@ -11,7 +11,7 @@ export default function NewTable() {
   };
   const [formData, setFormData] = useState({ ...initial });
   const [submitted, setSubmitted] = useState(false);
-  const [tableErrors, setTableErrors] = useState('');
+  const [tablesErrors, setTablesErrors] = useState(null);
   const history = useHistory();
 
   const submitHandler = (event) => {
@@ -27,13 +27,13 @@ export default function NewTable() {
     if(submitted) {
       const ac = new AbortController();
       async function create() {
-        setTableErrors(false)
+        setTablesErrors(false)
         try {
           const response = await createTable(formData, ac.signal)
           history.push(`/dashboard`)
           return response;
         } catch(error) {
-          setTableErrors(error)
+          setTablesErrors(error)
         } 
       }
       create();
@@ -43,7 +43,7 @@ export default function NewTable() {
 
   return (
     <>
-    <ErrorAlert error={tableErrors} />
+    <ErrorAlert error={tablesErrors} />
       <TableForm
         formData={formData}
         setFormData={setFormData}
