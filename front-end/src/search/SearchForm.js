@@ -19,6 +19,7 @@ export default function SearchForm({
       </label>
       <div>
         <input
+        className="form-control col-7"
           id="mobile_number"
           type="search"
           name="mobile_number"

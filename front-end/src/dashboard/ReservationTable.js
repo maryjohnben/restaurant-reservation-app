@@ -1,12 +1,15 @@
 import React from "react";
 import ReservationTableRows from "./ReservationTableRows";
 
+
 export default function ReservationTable({
     reservations,
+    handleCancel,
 }) {
     // console.log(reservations)
     const rows = reservations.map((reservation)=> (
         <ReservationTableRows 
+        handleCancel={handleCancel}
         reservation={reservation}
         key={reservation.reservation_id}
         />

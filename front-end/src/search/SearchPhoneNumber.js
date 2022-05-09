@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationTable from "../dashboard/ReservationTable";
-import { listReservations } from "../utils/api";
+import { listReservations, reservationStatusCancelled } from "../utils/api";
 import SearchForm from "./SearchForm";
 
 /*
@@ -16,7 +17,7 @@ export default function SearchPhoneNumber() {
   
   //contains phone number
   const [formData, setFormData] = useState({...initial});
-  const [reservations, setReservations] = useState([]);
+  const [reservations, setReservations] = useState(null);
   const [errors, setErrors] = useState(null);
   const [submitted, setSubmitted] = useState(false)
 
@@ -32,7 +33,26 @@ export default function SearchPhoneNumber() {
       .catch(setErrors);
     return () => ac.abort();
   };
-console.log('lll', reservations)
+
+  const history = useHistory()
+  const handleCancel = async (reservation_id) => {
+      const ac = new AbortController();
+      const  mobile_number  = formData.mobile_number;
+        const result = window.confirm(
+            "Do you want to cancel this reservation? This cannot be undone."
+        )
+        if (result) {
+          // history.go();
+        reservationStatusCancelled(reservation_id)
+        .then(() => listReservations({ mobile_number }, ac.signal))
+        .then(setReservations)
+        .then(()=> setSubmitted(true))
+        // window.location.reload(false)
+        .catch(setErrors);
+        }
+        // history.go()
+        return () => ac.abort()
+      };
 
   return (
     <>
@@ -47,10 +67,11 @@ console.log('lll', reservations)
       />
       {submitted &&
       <>
-      {reservations.length >= 1 ? (
+      {reservations ? (
         <div>
           <ReservationTable
             reservations={reservations}
+            handleCancel={handleCancel}
             />
         </div>
       ) : (

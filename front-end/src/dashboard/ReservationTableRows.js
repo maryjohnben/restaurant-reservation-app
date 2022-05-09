@@ -3,22 +3,11 @@ import {Link, useHistory} from 'react-router-dom'
 import { reservationStatusCancelled } from "../utils/api";
 
 export default function ReservationTableRows(
-    {reservation},
+    {reservation, handleCancel},
 ) {
   const history = useHistory()
   // if(reservation.status === 'finished' || reservation.status === 'cancelled') return null;
-    const handleCancel = async (reservation_id) => {
-      const ac = new AbortController();
-        const result = window.confirm(
-            "Do you want to cancel this reservation? This cannot be undone."
-        )
-        if (result) {
-          history.go();
-          const response = await reservationStatusCancelled(reservation_id, ac.signal);
-          return response
-        }
-        return () => ac.abort()
-      };
+    
     return (
         <tr key={reservation.reservation_id}>
       <th scope='row'>{reservation.reservation_id}</th>

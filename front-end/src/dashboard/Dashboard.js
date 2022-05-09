@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { reservationStatusCancelled } from "../utils/api";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today } from "../utils/date-time";
@@ -27,6 +29,20 @@ function Dashboard() {
     date = today();
   }
   // console.log(date)
+  const history = useHistory()
+    const handleCancel = async (reservation_id) => {
+        const ac = new AbortController();
+          const result = window.confirm(
+              "Do you want to cancel this reservation? This cannot be undone."
+          )
+          if (result) {
+            history.go();
+            const response = await reservationStatusCancelled(reservation_id, ac.signal);
+            // window.location.reload(false)
+            return response
+          }
+          return () => ac.abort()
+        };
 
   useEffect(loadDashboard, [date]);
 
@@ -58,7 +74,7 @@ function Dashboard() {
           <div className="d-flex justify-content-center">
             <ReservationButton date={date} />
           </div>
-          <ReservationTable reservations={reservations}/>
+          <ReservationTable reservations={reservations} handleCancel={handleCancel}/>
         </div>
         <div className="table-responsive col-md-6" style={{ marginTop: "0px" }}>
           <h4
