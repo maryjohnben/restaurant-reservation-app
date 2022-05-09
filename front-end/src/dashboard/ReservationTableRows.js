@@ -6,7 +6,7 @@ export default function ReservationTableRows(
     {reservation},
 ) {
   const history = useHistory()
-  if(reservation.status === 'finished' || reservation.status === 'cancelled') return null;
+  // if(reservation.status === 'finished' || reservation.status === 'cancelled') return null;
     const handleCancel = async (reservation_id) => {
       const ac = new AbortController();
         const result = window.confirm(
