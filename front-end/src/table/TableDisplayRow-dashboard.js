@@ -15,8 +15,8 @@ const history = useHistory()
             "Is this table ready to seat new guests? This cannot be undone."
         );
         if (result) {
-            history.go(0);
-            const response = await deleteOccupancy(table_id, ac.signal);
+          const response = await deleteOccupancy(table_id, ac.signal);
+          history.go(0);
             return response
         }
         return() => ac.abort()

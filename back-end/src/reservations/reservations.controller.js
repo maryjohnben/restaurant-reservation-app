@@ -156,6 +156,44 @@ async function read(req, res, next) {
   res.status(200).json({data})
 }
 
+//checks the status of the update reservation
+async function validateStatusUpdateRequest(req, res, next) {
+  if (!req.body.data.status) {
+    return next({ status: 400, message: "Body should contain status" });
+  }
+
+  if (
+    (req.body.data.status !== "booked") &&
+    (req.body.data.status !== "seated") &&
+  (req.body.data.status !== "finished") &&
+    (req.body.data.status !== "cancelled")
+  ) {
+    return next({
+      status: 400,
+      message: `'Status' cannot be ${req.body.data.status}. It can only be 'booked', 'seated', 'finished', or 'cancelled'.`,
+    });
+  }
+
+  if (res.locals.reservation.status === "finished") {
+    return next({
+      status: 400,
+      message: `Finished reservation cannot be changed`,
+    });
+  }
+  next();
+}
+//updates reservation status
+async function updateReservationStatus(req, res, next) {
+  const updatedStatus = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await service.updateReservationStatus(
+    updatedStatus
+  );
+  res.json({ data });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -167,6 +205,11 @@ module.exports = {
     isTuesday,
     isDatePast,
     asyncErrorBoundary(create),
+  ],
+  updateReservationStatus:[
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(validateStatusUpdateRequest),
+    asyncErrorBoundary(updateReservationStatus),
   ],
   read:[asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
 };

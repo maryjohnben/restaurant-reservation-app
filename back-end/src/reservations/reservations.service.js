@@ -21,17 +21,18 @@ function readReservation(reservation_id) {
     .where({reservation_id})
     .first()
 }
-
-// function updateStatus(updatedStatus) {
-//     return knex('reservations')
-//     .select('*')
-//     .where({reservation_id: updatedStatus.reservation_id})
-//     .update(updatedStatus)
-//     .returning('*')
-//     .then((updated)=> updated[0])
-// }
+//updates cancelled reservation status
+function updateReservationStatus(updatedReservationStatus) {
+    return knex('reservations')
+    .select('*')
+    .where({reservation_id: updatedReservationStatus.reservation_id})
+    .update(updatedReservationStatus)
+    .returning('*')
+    .then((updated)=> updated[0])
+}
 module.exports = {
     list,
     create,
     readReservation,
+    updateReservationStatus
 }
