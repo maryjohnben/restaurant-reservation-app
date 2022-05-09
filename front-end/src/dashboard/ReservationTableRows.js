@@ -26,7 +26,7 @@ export default function ReservationTableRows(
       <td>
       <td className="text-center">
             <a href={`/reservations/${reservation.reservation_id}/seat`}>
-              <button className="btn btn-sm btn-outline-light" type="button">
+              <button className="btn btn-secondary" type="button">
                 Seat
               </button>
             </a>
