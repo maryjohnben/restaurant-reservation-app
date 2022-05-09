@@ -26,9 +26,17 @@ function updateTableStatus(updatedTable) {
     .then((updated) => updated[0]);
 }
 
+function deleteOccupancy(table_id) {
+  return knex('tables')
+  .where({table_id})
+  .update({occupied: false, reservation_id: null}).returning('*')
+  .then((newEntry)=>newEntry[0]);
+}
+
 module.exports = {
   list,
   create,
   readTable,
   updateTableStatus,
+  deleteOccupancy,
 };
