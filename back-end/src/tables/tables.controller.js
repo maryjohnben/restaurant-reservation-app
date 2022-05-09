@@ -1,7 +1,8 @@
 const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasRequiredProperties = require("../errors/hasRequiredProperties");
-const { read } = require("../reservations/reservations.controller");
+const reservationsService = require("../reservations/reservations.service");
+const { response } = require("express");
 //lists tables
 async function list(req, res, next) {
   const data = await service.list();
@@ -64,6 +65,37 @@ const data = await service.updateTableStatus(updatedTable);
 res.json({data})
 }
 
+async function tableAssignValidation(req,res,next) {
+  const {reservation_id} = req.body.data
+  if(!reservation_id) {
+    return next({
+      status: 400,
+      message: 'reservation_id missing'
+    })
+  }
+  const reservation = await reservationsService.readReservation(Number(reservation_id))
+  console.log(reservation)
+  if(!reservation) {
+    return next({
+      status: 404,
+    message: 'Reservation not found.'
+    })
+  }
+  if(Number(res.locals.table.capacity) < Number(reservation.people)) {
+    return next({
+      status: 400,
+      message: 'Number of people to be seated cannot be more than the capacity of the table.'
+    })
+  }
+  if(res.locals.table.occupied === true) {
+    return next({
+      status: 400,
+      message: 'Table is already occupied please choose another table.'
+    })
+  }
+  next()
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -72,6 +104,6 @@ module.exports = {
     isInteger,
     asyncErrorBoundary(create),
   ],
-  read:[asyncErrorBoundary(tableExists), asyncErrorBoundary(readTable)],
-  update:[asyncErrorBoundary(tableExists), asyncErrorBoundary(updateTableStatus)],
+  readTable:[asyncErrorBoundary(tableExists), asyncErrorBoundary(readTable)],
+  update:[asyncErrorBoundary(tableExists), asyncErrorBoundary(tableAssignValidation), asyncErrorBoundary(updateTableStatus)],
 };

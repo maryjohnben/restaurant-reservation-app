@@ -55,10 +55,10 @@ function Dashboard() {
           </h4>
           <ErrorAlert error={reservationsError} />
           <ErrorAlert error={tablesErrors} />
-          <div>
+          <div className="d-flex justify-content-center">
             <ReservationButton date={date} />
           </div>
-          <ReservationTable reservations={reservations} />
+          <ReservationTable reservations={reservations}/>
         </div>
         <div className="table-responsive col-md-6" style={{ marginTop: "0px" }}>
           <h4
