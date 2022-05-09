@@ -13,7 +13,7 @@ function create(table) {
     .then((newEntry) => newEntry[0]);
 }
 
-function read(table_id) {
+function readTable(table_id) {
   return knex("tables").select("*").where({ table_id }).first();
 }
 
@@ -29,6 +29,6 @@ function updateTableStatus(updatedTable) {
 module.exports = {
   list,
   create,
-  read,
+  readTable,
   updateTableStatus,
 };

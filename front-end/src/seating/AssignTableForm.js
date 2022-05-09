@@ -17,7 +17,7 @@ const allTables = tables.map((table)=> (
 
   return (
     <form onSubmit={submitHandler}>
-      <label htmlFor="table_id" className="w-75 p-3">
+      <label htmlFor="table_id">
         Seat At:
       </label>
       <select
@@ -25,8 +25,7 @@ const allTables = tables.map((table)=> (
         name="table_id"
         onChange={handleChange}
         required={true}
-        className="form-select"
-        aria-label="Default select example"
+        className="form-control bg-white text-back"
       >
         <option value>Select a Table</option>
         {allTables}
@@ -38,7 +37,7 @@ const allTables = tables.map((table)=> (
         <button
           type="submit"
           className="btn btn-primary"
-          style={{ margin: "3px" }}
+          style={{ margin: "10px" }}
         >
           Submit
         </button>
