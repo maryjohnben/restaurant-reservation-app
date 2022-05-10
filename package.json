@@ -49,6 +49,7 @@
   "author": "Thinkful, Inc.",
   "license": "UNLICENSED",
   "dependencies": {
+    "heroku": "^7.60.2",
     "knex": "^2.0.0",
     "pg": "^8.7.3"
   }
