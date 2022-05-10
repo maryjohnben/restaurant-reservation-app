@@ -1,25 +1,26 @@
 import React from "react";
 
+//forms used to make seating table assignment. If table is smaller than the reservation party the table cannot be assigned
+
 export default function AssignTableForm({
   setFormData,
   submitHandler,
   cancelHandler,
   tables,
 }) {
-
-const handleChange = (event) => {
+  const handleChange = (event) => {
     const value = event.target.value;
-    setFormData({[event.target.name]: value})
-}
-const allTables = tables.map((table)=> (
-    <option value={table.table_id} key={table.table_id}>{table.table_name} - {table.capacity}</option>
-))
+    setFormData({ [event.target.name]: value });
+  };
+  const allTables = tables.map((table) => (
+    <option value={table.table_id} key={table.table_id}>
+      {table.table_name} - {table.capacity}
+    </option>
+  ));
 
   return (
     <form onSubmit={submitHandler}>
-      <label htmlFor="table_id">
-        Seat At:
-      </label>
+      <label htmlFor="table_id">Seat At:</label>
       <select
         id="table_id"
         name="table_id"
@@ -31,7 +32,11 @@ const allTables = tables.map((table)=> (
         {allTables}
       </select>
       <div>
-        <button type="cancel" className="btn btn-secondary" onClick={cancelHandler}>
+        <button
+          type="cancel"
+          className="btn btn-secondary"
+          onClick={cancelHandler}
+        >
           Cancel
         </button>
         <button

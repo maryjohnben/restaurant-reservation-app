@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { reservationStatusCancelled } from "../utils/api";
 
+//row that populates the reservation table on the dashbaord. This component also incorporates seat, edit and cancel as needed.
 export default function ReservationTableRows({ reservation }) {
   const history = useHistory();
   const handleCancel = async (reservation_id) => {
@@ -20,9 +21,10 @@ export default function ReservationTableRows({ reservation }) {
     return () => ac.abort();
   };
   return (
-    <tr key={reservation.reservation_id}>
+    <tr>
       <th scope="row">{reservation.reservation_id}</th>
-      <td>{`${reservation.last_name}, ${reservation.first_name}`}</td>
+      <td>{reservation.first_name}</td>
+      <td>{reservation.last_name}</td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.reservation_date}</td>
@@ -34,14 +36,21 @@ export default function ReservationTableRows({ reservation }) {
         {reservation.status === "booked" && (
           <>
             <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-              <button className="btn btn-success">Seat</button>
+              <button className="btn btn-primary" style={{ margin: "2px" }}>
+                Seat
+              </button>
             </Link>
             <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-              <button type="button" className="btn btn-secondary">
+              <button
+                type="button"
+                style={{ margin: "2px" }}
+                className="btn btn-secondary"
+              >
                 Edit
               </button>
             </Link>
             <button
+              style={{ margin: "2px" }}
               className="btn btn-danger"
               data-reservation-id-cancel={reservation.reservation_id}
               onClick={() => handleCancel(reservation.reservation_id)}

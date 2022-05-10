@@ -1,15 +1,11 @@
-import React from "react"
-import {useState, useEffect} from "react"
+import React from "react";
+import { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { readReservation, updateReservation} from "../utils/api";
-import InvalidDateTime from '../layout/InvalidDateTime'
+import { readReservation, updateReservation } from "../utils/api";
+import InvalidDateTime from "../layout/InvalidDateTime";
 import { formatAsDate } from "../utils/date-time";
 
-/*
-EditReservation contains logic for how to handle submitting an update reservation.
-Displays any errors that come from API.
-Upon initial render, form is populated with pre-existing information from reservation.
-*/
+//makes editing of reservation possible. Customers can update fields as needed. Prefills form to be filled out easily.
 export default function EditReservation() {
   const initial = {
     first_name: "",
@@ -19,29 +15,34 @@ export default function EditReservation() {
     reservation_time: "",
     people: 0,
   };
-  
+
+  //pulls data from params to be used later
   const { reservation_id } = useParams();
   const history = useHistory();
   const [error, setError] = useState(null);
 
-  const [formData, setFormData] = useState({...initial});
+  const [formData, setFormData] = useState({ ...initial });
+  //pulls reservation data to be updated
   useEffect(() => {
     setError(null);
-    const ac = new AbortController()
+    const ac = new AbortController();
     async function read() {
-    try {
-   let response =  await readReservation(reservation_id, ac.signal)
-      setFormData({...response,
-      reservation_date: formatAsDate(response.reservation_date)})
-      return response
-    } catch(error) {
-      setError(error)
+      try {
+        let response = await readReservation(reservation_id, ac.signal);
+        setFormData({
+          ...response,
+          reservation_date: formatAsDate(response.reservation_date),
+        });
+        return response;
+      } catch (error) {
+        setError(error);
+      }
     }
-  }
-  read()
-  return()=> ac.AbortController
+    read();
+    return () => ac.AbortController;
   }, [reservation_id]);
 
+  //tracks form when being updated
   function handleChange(event) {
     const value = event.target.value;
     setFormData((prevState) => ({
@@ -58,33 +59,48 @@ export default function EditReservation() {
     }));
   }
 
-  function validate(formData){
-    const errors = []
-
+  //checks that data passed in to be valid and displays error message when encountered
+  function validate(formData) {
+    const errors = [];
+    //only future reservations are allowed
     function isFutureDate({ reservation_date, reservation_time }) {
       const dt = new Date(`${reservation_date}T${reservation_time}`);
       if (dt < new Date()) {
-          errors.push(new Error("Reservation must be set in the future"));
+        errors.push(
+          new Error(
+            "Date and/or time cannot be in the past. Please select another date/time."
+          )
+        );
       }
     }
-
+    //restaurant closed
     function isTuesday({ reservation_date }) {
       const day = new Date(reservation_date).getUTCDay();
       if (day === 2) {
-        errors.push(new Error("No reservations available on Tuesday."));
+        errors.push(
+          new Error("Restaurant is closed Tuesday. Please select another day.")
+        );
       }
     }
-
-    function isOpenHours({ reservation_time }){
+    //closing and opening hours
+    function isOpenHours({ reservation_time }) {
       const hour = parseInt(reservation_time.split(":")[0]);
       const mins = parseInt(reservation_time.split(":")[1]);
 
-      if (hour <= 10 && mins <= 30){
-          errors.push(new Error("Restaurant is only open after 10:30 am"));
+      if (hour < 10 || (hour === 10 && mins < 30)) {
+        errors.push(
+          new Error(
+            "Restaurant will not open until 10:30 AM. Please reserve a later time."
+          )
+        );
       }
 
-      if (hour >= 22){
-          errors.push(new Error("Restaurant is closed after 10:00 pm"));
+      if (hour > 21 || (hour === 21 && mins > 30)) {
+        errors.push(
+          new Error(
+            "Restaurant closes at 10:30 PM and last time available for reservation is 9:30 PM. Please pick another time."
+          )
+        );
       }
     }
 
@@ -93,39 +109,44 @@ export default function EditReservation() {
     isOpenHours(formData);
 
     return errors;
-}
-const cancelHandler = () => {
-  history.goBack();
-};
-function submitHandler(event){
-  event.preventDefault();
-  event.stopPropagation();
-
-  const reservationErrors = validate(formData);
-
-  if (reservationErrors.length) {
-    return setError(reservationErrors);
   }
- const ac = new AbortController()
- async function update() {
-   try {
-  let response = await updateReservation(formData, reservation_id, ac.signal)
-  history.goBack()
-  return response
-   } catch(error) {
-    setError(error)
-   }
-  }
-  update()
-  return()=> ac.abort()
-}
+  const cancelHandler = () => {
+    history.go(-1);
+  };
+  function submitHandler(event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-return (
-  <form onSubmit={submitHandler} className="w-75 p-3">
+    const reservationErrors = validate(formData);
+
+    if (reservationErrors.length) {
+      return setError(reservationErrors);
+    }
+    const ac = new AbortController();
+    async function update() {
+      try {
+        //updates reservation form
+        let response = await updateReservation(
+          formData,
+          reservation_id,
+          ac.signal
+        );
+        history.goBack();
+        return response;
+      } catch (error) {
+        setError(error);
+      }
+    }
+    update();
+    return () => ac.abort();
+  }
+  //form that makes editing of reservation possibleXF
+  return (
+    <form onSubmit={submitHandler} className="w-75 p-3">
       <InvalidDateTime errors={error} />
       <div className="form-group">
         <h1>
-          <span>Edit Table</span>
+          <span>Edit Reservation</span>
         </h1>
         <label htmlFor="first_name">First Name</label>
         <input
@@ -157,7 +178,6 @@ return (
           name="mobile_number"
           required={true}
           placeholder="000-000-0000"
-          // pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
           onChange={handleChange}
           value={formData.mobile_number}
         ></input>
@@ -169,7 +189,6 @@ return (
           type="date"
           id="reservation_date"
           name="reservation_date"
-          // pattern="\d{4}-\d{2}-\d{2}"
           required={true}
           onChange={handleChange}
           value={formData.reservation_date}
@@ -182,7 +201,6 @@ return (
           type="time"
           id="reservation_time"
           name="reservation_time"
-          // pattern="[0-9]{2}:[0-9]{2}"
           required={true}
           onChange={handleChange}
           value={formData.reservation_time}
@@ -216,5 +234,5 @@ return (
         Submit
       </button>
     </form>
-);
+  );
 }

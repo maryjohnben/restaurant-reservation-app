@@ -1,19 +1,14 @@
 import React from "react";
 import TableDisplayRow from "./TableDisplayRow-dashboard";
 
-export default function TableDisplay({
-    tables,
-}) {
-        // console.log(reservations)
-        const rows = tables.map((table)=> (
-            <TableDisplayRow
-            table={table}
-            key={table.table_id}
-            />
-        ));
-    // console.log(rows)
-        return (
-            <table className="table">
+//added data to table display row
+export default function TableDisplay({ tables }) {
+  const rows = tables.map((table) => (
+    <TableDisplayRow table={table} key={table.table_id} />
+  ));
+
+  return (
+    <table className="table">
       <thead className="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -23,9 +18,7 @@ export default function TableDisplay({
           <th scope="col">Options</th>
         </tr>
       </thead>
-      <tbody>
-          {rows}
-      </tbody>
+      <tbody>{rows}</tbody>
     </table>
-        )
-    }
+  );
+}

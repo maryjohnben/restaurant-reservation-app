@@ -1,5 +1,6 @@
 import React from "react";
 
+//generic form that lets adding new tables possible.
 export default function TableForm({
   formData,
   setFormData,

@@ -4,6 +4,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { listTables, readReservation, updateTableStatus } from "../utils/api";
 import AssignTableForm from "./AssignTableForm";
 
+//component that makes seating assignment possible. updates seating status depending on the person being assigned. If he is seated status changes to seated and once he is done status is changed to finished and archieved. This data can later be pulled in case needed using phone number.
 export default function NewSeating() {
   const initial = {
     table_id: null,
@@ -16,8 +17,6 @@ export default function NewSeating() {
 
   const history = useHistory();
   const { reservation_id } = useParams();
-  console.log(reservation_id);
-
 
   //Loads reservation.
   useEffect(() => {
@@ -25,9 +24,11 @@ export default function NewSeating() {
     async function read() {
       //   setErrors(false)
       try {
-        const response = await readReservation(reservation_id, ac.signal);
+        const response = await readReservation(
+          Number(reservation_id),
+          ac.signal
+        );
         setReservation(response);
-        console.log(response);
         return response;
       } catch (error) {
         setErrors(error);
@@ -45,7 +46,6 @@ export default function NewSeating() {
       try {
         const response = await listTables(ac.signal);
         setTables(response);
-        // console.log(response);
         return response;
       } catch (error) {
         setErrors(error);
@@ -68,29 +68,6 @@ export default function NewSeating() {
     return () => ac.abort();
   };
 
-//   useEffect(() => {
-//     if (submitted) {
-//         const ac = new AbortController();
-//         async function updateTable() {
-//             try {
-//                 const response = await updateTableStatus(
-//                     formData.table_id,
-//                     reservation_id,
-//                     ac.signal
-//                     );
-//                     setSubmitted(false)
-//           console.log('hello', response)
-//           history.push("/dashboard");
-//           return response;
-//         } catch (error) {
-//           setErrors(error);
-//         }
-//       }
-//       updateTable();
-//       return () => ac.abort();
-//     }
-//   }, [formData.table_id, reservation_id, history, submitted]);
-
   return (
     <div className="table-responsive col-md-6">
       <h1>Seat Reservation</h1>
@@ -99,7 +76,10 @@ export default function NewSeating() {
         <h4>
           {`# ${reservation.reservation_id} - ${reservation.first_name} ${
             reservation.last_name
-          } on ${reservation.reservation_date.slice(0, 10)} at ${reservation.reservation_time.slice(0, 5)} for ${
+          } on ${reservation.reservation_date.slice(
+            0,
+            10
+          )} at ${reservation.reservation_time.slice(0, 5)} for ${
             reservation.people
           }`}
         </h4>

@@ -89,7 +89,7 @@ async function tableAssignValidation(req, res, next) {
   if (res.locals.table.occupied === true) {
     return next({
       status: 400,
-      message: "Table is already 'seated' please choose another table.",
+      message: "Table is already 'occupied' please choose another table.",
     });
   }
   if (reservation.status === "seated") {
