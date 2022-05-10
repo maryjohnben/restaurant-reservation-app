@@ -22,7 +22,7 @@ function readReservation(reservation_id) {
     .first()
 }
 //updates cancelled reservation status
-function updateReservationStatus(updatedReservationStatus) {
+function updateReservation(updatedReservationStatus) {
     return knex('reservations')
     .select('*')
     .where({reservation_id: updatedReservationStatus.reservation_id})
@@ -30,6 +30,14 @@ function updateReservationStatus(updatedReservationStatus) {
     .returning('*')
     .then((updated)=> updated[0])
 }
+function update(updatedReservation) {
+    return knex("reservations")
+      .select("*")
+      .where({ reservation_id: updatedReservation.reservation_id })
+      .update(updatedReservation)
+      .returning("*")
+      .then((updatedNew) => updatedNew[0]);
+  }
 function searchMobile(mobile_number) {
     return knex("reservations")
       .whereRaw(
@@ -42,6 +50,7 @@ module.exports = {
     list,
     create,
     readReservation,
-    updateReservationStatus, 
+    updateReservation, 
+    update,
     searchMobile,
 }

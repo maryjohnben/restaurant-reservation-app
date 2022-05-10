@@ -8,6 +8,8 @@ import NewReservations from "../reservations/NewReservations";
 import NewTable from "../table/NewTable";
 import NewSeating from "../seating/NewSeating";
 import SearchPhoneNumber from "../search/SearchPhoneNumber";
+import EditReservation from "../reservations/EditReservation";
+import InputForm from "../reservations/InputForm";
 
 /**
  * Defines all the routes for the application.
@@ -26,10 +28,13 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route exact path={'/reservations/new'}>
-        <NewReservations />
+        <InputForm />
       </Route>
       <Route exact path={`/reservations/:reservation_id/seat`}>
         <NewSeating />
+      </Route>
+      <Route exact path={`/reservations/:reservation_id/edit`}>
+        <EditReservation />
       </Route>
       <Route exact path ={`/tables/new`} >
         <NewTable />

@@ -3,6 +3,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ReservationTable from "../dashboard/ReservationTable";
 import { listReservations } from "../utils/api";
 import SearchForm from "./SearchForm";
+import { useHistory } from "react-router";
 
 /*
 SearchByPhone contains logic for how to handle search submission.
@@ -13,7 +14,7 @@ export default function SearchPhoneNumber() {
   const initial = {
     mobile_number: ""
   }
-  
+  const history = useHistory()
   //contains phone number
   const [formData, setFormData] = useState({...initial});
   const [reservations, setReservations] = useState([]);
@@ -22,17 +23,16 @@ export default function SearchPhoneNumber() {
 
 
   const handleSubmission = (event) => {
-    event.preventDefault();
     setSubmitted(true)
+    event.preventDefault();
     const ac = new AbortController();
     const mobile_number = formData.mobile_number;
     setErrors(null)
     listReservations({ mobile_number }, ac.signal)
-      .then(setReservations)
-      .catch(setErrors);
+    .then(setReservations)
+    .catch(setErrors);
     return () => ac.abort();
   };
-console.log('lll', reservations)
 
   return (
     <>

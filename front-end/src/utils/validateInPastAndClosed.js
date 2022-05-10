@@ -13,6 +13,6 @@ export default function isPastDateAndClosed(reservation_date, reservation_time) 
         if((day.getHours() > 21) || (day.getHours() === 21 && day.getMinutes() > 30)) {
           return 'Restaurant closes at 10:30 PM and last time available for reservation is 9:30 PM. Please pick another time.'
         }
-          return null
+          return
       }
       
