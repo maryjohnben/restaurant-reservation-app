@@ -19,7 +19,7 @@ describe("US-04 - Seat reservation - E2E", () => {
 
   beforeAll(async () => {
     await fsPromises.mkdir("./.screenshots", { recursive: true });
-    setDefaultOptions({ timeout: 2000 });
+    setDefaultOptions({ timeout: 1000 });
     browser = await puppeteer.launch();
   });
 
@@ -269,6 +269,7 @@ describe("US-04 - Seat reservation - E2E", () => {
           .innerText.toLowerCase()
           .includes("seat");
       }, hrefSelector);
+
       expect(containsSeat).toBe(true);
     });
   });

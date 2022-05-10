@@ -19,7 +19,7 @@ describe("US-05 - Finish an occupied table - E2E", () => {
 
   beforeAll(async () => {
     await fsPromises.mkdir("./.screenshots", { recursive: true });
-    setDefaultOptions({ timeout: 2500 });
+    setDefaultOptions({ timeout: 1000 });
     browser = await puppeteer.launch();
   });
 
@@ -51,9 +51,9 @@ describe("US-05 - Finish an occupied table - E2E", () => {
       page.on("console", onPageConsole);
       await page.setViewport({ width: 1920, height: 1080 });
       await page.goto(`${baseURL}/dashboard?date=2035-01-01`, {
-        waitUntil: "networkidle2",
+        waitUntil: "networkidle0",
       });
-      await page.reload({ waitUntil: "networkidle2" });
+      await page.reload({ waitUntil: "networkidle0" });
     });
 
     test("clicking finish button and then clicking OK makes that table available", async () => {
@@ -61,13 +61,14 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         path: ".screenshots/us-05-dashboard-finish-button-before.png",
         fullPage: true,
       });
-
+      console.log('Checking out the table', table)
+      console.log("Checking out the reservation", reservation)
       const containsOccupied = await containsText(
         page,
         `[data-table-id-status="${table.table_id}"]`,
         "occupied"
       );
-
+        console.log('checking containsOccuiped', containsOccupied)
       expect(containsOccupied).toBe(true);
 
       const finishButtonSelector = `[data-table-id-finish="${table.table_id}"]`;
@@ -90,13 +91,13 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         path: ".screenshots/us-05-dashboard-finish-button-after.png",
         fullPage: true,
       });
-
+      console.log('checking the table AGAIN', table)
       const containsFree = await containsText(
         page,
         `[data-table-id-status="${table.table_id}"]`,
         "free"
       );
-
+        console.log('checking containsFREE', containsFree)
       expect(containsFree).toBe(true);
     });
 
@@ -126,7 +127,7 @@ describe("US-05 - Finish an occupied table - E2E", () => {
 
       await page.click(finishButtonSelector);
 
-      await page.waitForTimeout(20000);
+      await page.waitForTimeout(1000);
 
       await page.screenshot({
         path: ".screenshots/us-05-dashboard-finish-button-cancel-after.png",

@@ -111,7 +111,7 @@ export default function EditReservation() {
     return errors;
   }
   const cancelHandler = () => {
-    history.go(-1);
+    history.goBack();
   };
   function submitHandler(event) {
     event.preventDefault();
