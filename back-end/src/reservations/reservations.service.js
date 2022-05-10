@@ -6,7 +6,7 @@ function list(reservation_date) {
     .where({ reservation_date })
     .orderBy("reservation_time");
 }
-//creates reservations when propmpted. Received data body
+//creates reservations when propmpted. Receives data body to create new reservation
 function create(reservation) {
   return knex("reservations")
     .insert(reservation) //from post body

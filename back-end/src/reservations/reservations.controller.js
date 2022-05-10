@@ -4,6 +4,10 @@ const hasRequiredProperties = require("../errors/hasRequiredProperties");
 /**
  * List handler for reservation resources
  */
+//if data is received as query then finished and cancelled statuses are filtered out so that
+//just booked and seated will be on display at all time
+//but if mobile number is received as query then a list of all reservation including
+//cancelled and finished will be returned
 async function list(req, res) {
   if (req.query.date) {
     const { date } = req.query;
@@ -89,7 +93,7 @@ function isDateFormatValid(req, res, next) {
     next();
   }
 }
-
+//make sure time format is valid
 function isTimeFormatValid(req, res, next) {
   const { reservation_time } = req.body.data;
   const validFormat = /[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}/;
@@ -102,7 +106,7 @@ function isTimeFormatValid(req, res, next) {
     next();
   }
 }
-
+//make sure that date and time is not in the past if it is then an error will the thrown
 function isDatePast(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
   let today = new Date();
@@ -113,7 +117,7 @@ function isDatePast(req, res, next) {
       message: `Date for reservation must be in the future. Please select a future date.`,
     });
   }
-  console.log(day.getHours());
+
   if (day.getHours() < 10 || (day.getHours() === 10 && day.getMinutes() < 30)) {
     return next({
       status: 400,
@@ -130,7 +134,7 @@ function isDatePast(req, res, next) {
   }
   next();
 }
-
+//restaurant is closed on tuesdays so if date is on tuesday then reservations will be rejected
 function isTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
   let day = new Date(reservation_date);
@@ -142,14 +146,17 @@ function isTuesday(req, res, next) {
   }
   next();
 }
-
+//received data from request to create new reservations
 async function create(req, res, next) {
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
 
+//sets res.locals to validate that reservations exists before any further actions are proceeded
 async function reservationExists(req, res, next) {
-  const reservation = await service.readReservation(Number(req.params.reservation_id));
+  const reservation = await service.readReservation(
+    Number(req.params.reservation_id)
+  );
   if (reservation) {
     res.locals.reservation = reservation;
     return next();
@@ -159,7 +166,7 @@ async function reservationExists(req, res, next) {
     message: `${req.params.reservation_id} Reservation cannot be found.`,
   });
 }
-
+//id is passed to retrieve reservation data
 async function read(req, res, next) {
   const data = await service.readReservation(
     Number(res.locals.reservation.reservation_id)
@@ -184,7 +191,7 @@ async function validateStatusUpdateRequest(req, res, next) {
       message: `'Status' cannot be '${req.body.data.status}'. It can only be 'booked', 'seated', 'finished', or 'cancelled'.`,
     });
   }
-
+  //if status is finished then reservation cannot be edited
   if (res.locals.reservation.status === "finished") {
     return next({
       status: 400,
@@ -193,6 +200,7 @@ async function validateStatusUpdateRequest(req, res, next) {
   }
   next();
 }
+//make sure that status is booked because only this has options to edit and seat and cancel
 function checkStatus(req, res, next) {
   let { status } = req.body.data;
   if (!status) {
@@ -207,8 +215,7 @@ function checkStatus(req, res, next) {
     next();
   }
 }
-
-
+//if anything is other than checked then it cannot be updates
 function checkBooked(req, res, next) {
   if (res.locals.reservation.status !== "booked") {
     next({
@@ -219,7 +226,7 @@ function checkBooked(req, res, next) {
     next();
   }
 }
-//updates reservation status
+//updates reservation status based on the passed in data
 async function updateReservation(req, res, next) {
   const updatedStatus = {
     ...req.body.data,
@@ -228,14 +235,14 @@ async function updateReservation(req, res, next) {
   const data = await service.updateReservation(updatedStatus);
   res.status(200).json({ data });
 }
-async function update(req,res,next) {
+//updates the reservation form passed in through req.body
+async function update(req, res, next) {
   const updatedReservation = {
     ...req.body.data,
-    reservation_id: res.locals.reservation.reservation_id
-
-  }
-  const data = await service.update(updatedReservation)
-  res.status(200).json({data})
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await service.update(updatedReservation);
+  res.status(200).json({ data });
 }
 
 module.exports = {
@@ -266,7 +273,7 @@ module.exports = {
     isTuesday,
     isDatePast,
     checkBooked,
-    asyncErrorBoundary(update)
+    asyncErrorBoundary(update),
   ],
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
 };
