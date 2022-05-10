@@ -244,14 +244,6 @@ async function update(req, res, next) {
   const data = await service.update(updatedReservation);
   res.status(200).json({ data });
 }
-// async function update(req, res, next) {
-//   const updatedReservation = {
-//     ...req.body.data,
-//     reservation_id: res.locals.reservation.reservation_id,
-//   };
-//   const data = await service.update(updatedReservation);
-//   res.status(200).json({ data });
-// }
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
