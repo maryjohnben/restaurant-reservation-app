@@ -110,9 +110,6 @@ export default function InputForm() {
     <form onSubmit={submitHandler} className="w-75 p-3">
       <InvalidDateTime errors={error} />
       <div className="form-group">
-        <h1>
-          <span>Create Reservation</span>
-        </h1>
         <label htmlFor="first_name">First Name</label>
         <input
           className="form-control"
