@@ -7,8 +7,15 @@ const hasRequiredProperties = require("../errors/hasRequiredProperties");
 async function list(req, res) {
   if (req.query.date) {
     const { date } = req.query;
-    const data = await service.list(date);
-    res.status(200).json({ data });
+    const reservations = await service.list(date);
+    const result = reservations.filter(
+      (reservation) => ((reservation.status !== "finished") && (reservation.status !== 'cancelled')))
+    res.status(200).json({ data: result });
+  }
+  if(req.query.mobile_number) {
+    const { mobile_number } = req.query;
+    const reservations = await service.searchMobile(mobile_number);
+    res.status(200).json({ data: reservations });
   }
 }
 
