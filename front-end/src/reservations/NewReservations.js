@@ -28,14 +28,14 @@ export default function NewReservations() {
     setSubmitted(true);
   }
   const cancelHandler = () => {
-    history.go(-1)
+    history.goBack()
   }
 
   const isTuesday = validateTuesday(formData.reservation_date)
   const isPast = validateInPast(formData.reservation_date, formData.reservation_time)
   
-console.log('is tuesday', isTuesday)
-console.log('is past', isPast)
+// console.log('is tuesday', isTuesday)
+// console.log('is past', isPast)
 
 //creating new reservation
 useEffect(()=>{
@@ -46,14 +46,14 @@ useEffect(()=>{
     if(isPast) setTimeError(arr => [...arr, isPast])
     if(isTuesday || isPast) return;
     const ac = new AbortController();
-    setReservationsError(null)
-    // setTimeError(null);
     async function create() {
+      setReservationsError(false)
       try {
         const response = await createReservation(formData, ac.signal)
         history.push(`/dashboard?date=${formData.reservation_date}`)
         return response;
       } catch(error) {
+        // debugger
         setReservationsError(error)
       } 
     }
@@ -62,7 +62,7 @@ useEffect(()=>{
   }
 }, [submitted, formData, history, isPast, isTuesday])
 
-// console.log('timeerror',timeError)
+// console.log('error',reservationsError)
 // console.log('submit',submitted)
 return (
   <>

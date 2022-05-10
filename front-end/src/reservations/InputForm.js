@@ -14,8 +14,7 @@ export default function InputForm({
   }
 
   return (
-    <div className="w-75 p-3">
-    <form onSubmit={submitHandler}>
+    <form onSubmit={submitHandler} className="w-75 p-3">
     <div className="form-group">
     <h1>
           <span>{title}</span>
@@ -37,7 +36,7 @@ export default function InputForm({
       className="form-control"
         type="text"
         id="last_name"
-        name="last_name"
+        name='last_name'
         required={true}
         onChange={handleChange}
         value={formData.last_name}
@@ -51,7 +50,7 @@ export default function InputForm({
         name="mobile_number"
         required={true}
         placeholder='000-000-0000'
-        // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+        pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
         onChange={handleChange}
         value={formData.mobile_number}
       ></input>
@@ -63,6 +62,7 @@ export default function InputForm({
         type="date"
         id="reservation_date"
         name="reservation_date"
+        pattern="\d{4}-\d{2}-\d{2}"
         required={true}
         onChange={handleChange}
         value={formData.reservation_date}
@@ -75,6 +75,7 @@ export default function InputForm({
         type="time"
         id="reservation_time"
         name="reservation_time"
+        pattern="[0-9]{2}:[0-9]{2}"
         required={true}
         onChange={handleChange}
         value={formData.reservation_time}
@@ -87,22 +88,22 @@ export default function InputForm({
         type="number"
         id="people"
         name="people"
+        min={1}
         required={true}
         onChange={handleChange}
         value={formData.people}
       ></input>
       </div>
-      <button onClick={cancelHandler} type="button" className="btn btn-secondary">
+      <button onClick={cancelHandler} type="cancel" className="btn btn-secondary">
         Cancel
       </button>
       <button
-        type="submit"
+        type='submit'
         className="btn btn-primary"
         style={{ margin: "3px" }}
       >
         Submit
       </button>
     </form>
-    </div>
   );
 }

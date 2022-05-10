@@ -36,9 +36,8 @@ async function fetchJson(url, options, onCancel) {
     if (response.status === 204) {
       return null;
     }
-
     const payload = await response.json();
-
+    
     if (payload.error) {
       return Promise.reject({ message: payload.error });
     }
@@ -77,7 +76,18 @@ export async function createReservation(reservation, signal) {
     body: JSON.stringify({data: reservation}),
     signal,
   }
-  return await fetchJson(url, options, reservation)
+  return await fetchJson(url, options, [])
+}
+
+export async function createTable(table, signal) {
+  const url = `${API_BASE_URL}/tables`
+  const options = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({data: table}),
+    signal,
+  }
+  return await fetchJson(url, options, [])
 }
 
 //cancelling reservation
@@ -89,4 +99,35 @@ export async function cancelReservation(id, signal) {
     body:JSON.stringify({data: {status: 'cancelled'}})
   }
   return await fetchJson(url, options, {})
+}
+export async function readReservation(reservation_id,signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  const options = {
+    method: "GET",
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options, []);
+}
+
+export async function listTables(signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "GET",
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options, []);
+}
+
+//updates table status between free and ocuupied
+export async function updateTableStatus(table_id, reservation_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({data: {reservation_id: reservation_id}}),
+    signal,
+  };
+  return await fetchJson(url, options, {});
 }

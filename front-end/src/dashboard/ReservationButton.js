@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { next, previous, today } from "../utils/date-time";
 
-export default function ReservationDisplay({date}) {
+export default function ReservationButton({date}) {
     return (
         <nav aria-label="...">
   <ul className="pagination">

@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
+import {Link} from 'react-router-dom'
 
 export default function ReservationTableRows(
     {reservation},
@@ -18,41 +17,21 @@ export default function ReservationTableRows(
     //   };
     return (
         <tr key={reservation.reservation_id}>
-      <th scope="row">{reservation.reservation_id}</th>
+      <th>{reservation.reservation_id}</th>
       <td>{`${reservation.last_name}, ${reservation.first_name}`}</td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.reservation_date}</td>
       <td>{reservation.people}</td>
-      {/* <td>placeholder</td>
       <td>
-          <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-            <button 
-            type="button" 
-            className="btn btn-secondary">
-              Seat
-            </button>
-          </Link>
+      <td className="text-center">
+            <a href={`/reservations/${reservation.reservation_id}/seat`}>
+              <button className="btn btn-sm btn-outline-light" type="button">
+                Seat
+              </button>
+            </a>
+          </td>
         </td>
-      <td>
-        <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-          <button 
-          type="button" 
-          className="btn btn-secondary">
-            Edit
-          </button>
-        </Link>
-      </td>
-      <td>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          data-reservation-id-cancel={reservation.reservation_id}
-        //   onClick={() => handleCancel(reservation.reservation_id)}
-        >
-          Cancel
-        </button>
-      </td> */}
     </tr>
     )
 }

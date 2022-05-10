@@ -23,6 +23,7 @@ console.log(rows)
       <th scope="col">Time</th>
       <th scope="col">People</th>
       <th scope="col">Status</th>
+      {/* <th scope="col">Options</th> */}
     </tr>
   </thead>
   <tbody>

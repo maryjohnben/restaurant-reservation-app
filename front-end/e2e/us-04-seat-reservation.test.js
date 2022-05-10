@@ -255,7 +255,7 @@ describe("US-04 - Seat reservation - E2E", () => {
       });
 
       const hrefSelector = `[href="/reservations/${reservation.reservation_id}/seat"]`;
-
+      await page.waitForNavigation({waitUntil: 'netwrokidle2'})
       await page.waitForSelector(hrefSelector);
 
       await page.screenshot({
