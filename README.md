@@ -398,3 +398,13 @@ so that reservations are accurate and current.
    - Clicking "Cancel" makes no changes, then display the previous page.
 
 > **Hint** The same validation used for create applies to editing a reservation. The form and the API for updating a reservation must not allow the user to violate any of the rules specified when creating a reservation.
+
+# Full Stack Final Capstone
+
+# A project meant to assist restaurant with reservation. The App not just takes in reservation it can also keep track of table status and lets to update reservation and archieves finished and cancelled reservations.
+
+### Installation
+### Fork and clone this repository.
+### Copy sample .env and add databases to the backend
+### Run npm install
+### npm start or npm run start:dev for development purposes.
