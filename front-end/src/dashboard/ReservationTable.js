@@ -22,6 +22,7 @@ console.log(rows)
       <th scope="col">Date</th>
       <th scope="col">Time</th>
       <th scope="col">People</th>
+      <th scope="col">Status</th>
       <th scope="col">Seat?</th>
       {/* <th scope="col">Options</th> */}
     </tr>

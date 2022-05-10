@@ -90,16 +90,7 @@ export async function createTable(table, signal) {
   return await fetchJson(url, options, [])
 }
 
-//cancelling reservation
-export async function cancelReservation(id, signal) {
-  const url = `${API_BASE_URL}/reservations/${id}/status`;
-  const options = {
-    method: 'PUT',
-    headers,
-    body:JSON.stringify({data: {status: 'cancelled'}})
-  }
-  return await fetchJson(url, options, {})
-}
+
 export async function readReservation(reservation_id,signal) {
   const url = `${API_BASE_URL}/reservations/${reservation_id}`;
   const options = {
@@ -140,4 +131,14 @@ export async function deleteOccupancy(table_id, signal) {
     signal,
   };
   return await fetchJson(url, options);
+}
+//changing reservation status
+export async function reservationStatusCancelled(reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const options = {
+    method: 'PUT',
+    headers,
+    body:JSON.stringify({data: {status: 'cancelled'}})
+  }
+  return await fetchJson(url, options, {})
 }

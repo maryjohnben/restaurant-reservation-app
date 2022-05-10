@@ -17,20 +17,35 @@ function readTable(table_id) {
   return knex("tables").select("*").where({ table_id }).first();
 }
 
-function updateTableStatus(updatedTable) {
-  return knex("tables")
+async function updateTableStatus(updatedTable) {
+  await knex("tables")
     .select("*")
     .where({ table_id: updatedTable.table_id })
     .update(updatedTable)
     .returning('*')
-    .then((updated) => updated[0]);
-}
+    .then((updated) => updated[0])
 
-function deleteOccupancy(table_id) {
-  return knex('tables')
-  .where({table_id})
+    const response = await knex("reservations")
+    .select("*")
+    .where({ reservation_id: updatedTable.reservation_id })
+    .update({ status: "seated" })
+    .returning('*')
+  return response[0];
+}
+//delete table occupancy and changes reservation status to finished
+async function deleteOccupancy(table) {
+  await knex("reservations")
+  .select("*")
+  .where({ reservation_id: table.reservation_id })
+  .update({ status: "finished" })
+  .returning("*")
+  
+  const response = await knex('tables')
+  .where({table_id: table.table_id})
   .update({occupied: false, reservation_id: null}).returning('*')
   .then((newEntry)=>newEntry[0]);
+
+  return response;
 }
 
 module.exports = {

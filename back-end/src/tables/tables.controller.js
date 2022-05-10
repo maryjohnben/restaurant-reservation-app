@@ -9,7 +9,7 @@ async function list(req, res, next) {
   res.status(200).json({ data });
 }
 const hasProperties = hasRequiredProperties("capacity", "table_name");
-const hasPropertiesForUpdate = hasRequiredProperties('reservation_id');
+const hasPropertiesForUpdate = hasRequiredProperties("reservation_id");
 
 function isTableNameTwoCharacters(req, res, next) {
   const { table_name } = req.body.data;
@@ -26,11 +26,11 @@ function isTableNameTwoCharacters(req, res, next) {
 function isInteger(req, res, next) {
   let { capacity } = req.body.data;
   // if(capacity.isS)
-  
+
   // console.log(capacity)
   capacity = Number(capacity);
   if (!Number.isInteger(capacity)) {
-   return next({
+    return next({
       status: 400,
       message: "Input for 'capacity' must be a valid number.",
     });
@@ -51,7 +51,7 @@ async function tableExists(req, res, next) {
     res.locals.table = table;
     return next();
   }
-  next({ status: 404, message: `Table ${table_id} is not found.`});
+  next({ status: 404, message: `Table ${table_id} is not found.` });
 }
 
 // async function readTable(req, res, next) {
@@ -59,16 +59,7 @@ async function tableExists(req, res, next) {
 //   res.status(200).json({ data });
 // }
 
-async function updateTableStatus(req, res, next) {
-  const updatedTable = {
-    ...req.body.data,
-    occupied: true,
-    table_id: res.locals.table.table_id,
-  };
-  console.log(updatedTable);
-  const data = await service.updateTableStatus(updatedTable);
-  res.json({ data });
-}
+
 
 async function tableAssignValidation(req, res, next) {
   const { reservation_id } = req.body.data;
@@ -103,7 +94,7 @@ async function tableAssignValidation(req, res, next) {
   }
   next();
 }
-function tableAvailable(req,res,next) {
+function tableAvailable(req, res, next) {
   if (res.locals.table.occupied === false) {
     return next({
       status: 400,
@@ -115,15 +106,37 @@ function tableAvailable(req,res,next) {
       status: 400,
       message: "Table is not occupied.",
     });
+  }
+  next();
 }
-next()
+//checks if table occupied
+function tableNotAvailable(req, res, next) {
+  if (res.locals.table.occupied) {
+    return next({
+      status: 400,
+      message: "Table is occupied. Select another table.",
+    });
+  }
+  next();
+}
+//changing table status
+async function updateTableStatus(req, res, next) {
+  const updatedTable = {
+    ...req.body.data,
+    occupied: true,
+    table_id: res.locals.table.table_id,
+  };
+  console.log(updatedTable);
+  const data = await service.updateTableStatus(updatedTable);
+  res.json({ data });
 }
 
-async function deleteOccupancy(req,res,next) {
-    const table_id = res.locals.table.table_id
-    const data = await service.deleteOccupancy(table_id)
-    console.log(data)
-    res.status(200).json({data})
+//sets table free and change reseration status to finished
+async function deleteOccupancy(req, res, next) {
+  const table = res.locals.table;
+  const data = await service.deleteOccupancy(table);
+  console.log(data);
+  res.json({ data });
 }
 
 module.exports = {
@@ -139,9 +152,12 @@ module.exports = {
     asyncErrorBoundary(tableExists),
     hasPropertiesForUpdate,
     asyncErrorBoundary(tableAssignValidation),
+    tableNotAvailable,
     asyncErrorBoundary(updateTableStatus),
   ],
-  destroy:[asyncErrorBoundary(tableExists),
+  destroy: [
+    asyncErrorBoundary(tableExists),
     tableAvailable,
-  asyncErrorBoundary(deleteOccupancy)]
+    asyncErrorBoundary(deleteOccupancy),
+  ],
 };
