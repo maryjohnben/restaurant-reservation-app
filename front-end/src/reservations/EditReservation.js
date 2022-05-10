@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router";
-import { createReservation } from "../utils/api";
+import React from "react";
+import { useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { readReservation, updateReservation } from "../utils/api";
 import InvalidDateTime from "../layout/InvalidDateTime";
+import { formatAsDate } from "../utils/date-time";
 
-//creates new reservation
-export default function InputForm() {
+//makes editing of reservation possible. Customers can update fields as needed. Prefills form to be filled out easily.
+export default function EditReservation() {
   const initial = {
     first_name: "",
     last_name: "",
@@ -13,10 +15,34 @@ export default function InputForm() {
     reservation_time: "",
     people: 0,
   };
+
+  //pulls data from params to be used later
+  const { reservation_id } = useParams();
   const history = useHistory();
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({ ...initial });
-  //records input
+  //pulls reservation data to be updated
+  useEffect(() => {
+    setError(null);
+    const ac = new AbortController();
+    async function read() {
+      try {
+        let response = await readReservation(reservation_id, ac.signal);
+        setFormData({
+          ...response,
+          reservation_date: formatAsDate(response.reservation_date),
+        });
+        return response;
+      } catch (error) {
+        setError(error);
+      }
+    }
+    read();
+    return () => ac.AbortController;
+  }, [reservation_id]);
+
+  //tracks form when being updated
   function handleChange(event) {
     const value = event.target.value;
     setFormData((prevState) => ({
@@ -32,13 +58,11 @@ export default function InputForm() {
       [event.target.name]: Number(value),
     }));
   }
-  //catches the error and displays as needed
-  const [error, setError] = useState(null);
 
-  //makes sure that the data inputted is valid
+  //checks that data passed in to be valid and displays error message when encountered
   function validate(formData) {
-    let errors = [];
-    //no past reservations are allowed
+    const errors = [];
+    //only future reservations are allowed
     function isFutureDate({ reservation_date, reservation_time }) {
       const dt = new Date(`${reservation_date}T${reservation_time}`);
       if (dt < new Date()) {
@@ -49,7 +73,7 @@ export default function InputForm() {
         );
       }
     }
-    //restaurant is closed on tuesday
+    //restaurant closed
     function isTuesday({ reservation_date }) {
       const day = new Date(reservation_date).getUTCDay();
       if (day === 2) {
@@ -58,7 +82,7 @@ export default function InputForm() {
         );
       }
     }
-    //hours of operation
+    //closing and opening hours
     function isOpenHours({ reservation_time }) {
       const hour = parseInt(reservation_time.split(":")[0]);
       const mins = parseInt(reservation_time.split(":")[1]);
@@ -87,7 +111,7 @@ export default function InputForm() {
     return errors;
   }
   const cancelHandler = () => {
-    history.goBack();
+    history.go(-1);
   };
   function submitHandler(event) {
     event.preventDefault();
@@ -99,26 +123,37 @@ export default function InputForm() {
       return setError(reservationErrors);
     }
     const ac = new AbortController();
-    createReservation(formData, ac.signal)
-      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
-      .catch(setError);
+    async function update() {
+      try {
+        //updates reservation form
+        let response = await updateReservation(
+          formData,
+          reservation_id,
+          ac.signal
+        );
+        history.goBack();
+        return response;
+      } catch (error) {
+        setError(error);
+      }
+    }
+    update();
     return () => ac.abort();
   }
-
-  //makes creating reservation possible.
+  //form that makes editing of reservation possibleXF
   return (
     <form onSubmit={submitHandler} className="w-75 p-3">
       <InvalidDateTime errors={error} />
       <div className="form-group">
         <h1>
-          <span>Create Reservation</span>
+          <span>Edit Reservation</span>
         </h1>
         <label htmlFor="first_name">First Name</label>
         <input
           className="form-control"
           type="text"
-          name="first_name"
           id="first_name"
+          name="first_name"
           required={true}
           onChange={handleChange}
           value={formData.first_name}
@@ -128,8 +163,8 @@ export default function InputForm() {
       <input
         className="form-control"
         type="text"
-        name="last_name"
         id="last_name"
+        name="last_name"
         required={true}
         onChange={handleChange}
         value={formData.last_name}
@@ -139,11 +174,10 @@ export default function InputForm() {
         <input
           className="form-control"
           type="tel"
-          name="mobile_number"
           id="mobile_number"
+          name="mobile_number"
           required={true}
           placeholder="000-000-0000"
-          // pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
           onChange={handleChange}
           value={formData.mobile_number}
         ></input>
@@ -153,9 +187,8 @@ export default function InputForm() {
         <input
           className="form-control"
           type="date"
-          name="reservation_date"
           id="reservation_date"
-          // pattern="\d{4}-\d{2}-\d{2}"
+          name="reservation_date"
           required={true}
           onChange={handleChange}
           value={formData.reservation_date}
@@ -166,9 +199,8 @@ export default function InputForm() {
         <input
           className="form-control"
           type="time"
-          name="reservation_time"
           id="reservation_time"
-          // pattern="[0-9]{2}:[0-9]{2}"
+          name="reservation_time"
           required={true}
           onChange={handleChange}
           value={formData.reservation_time}
@@ -179,8 +211,8 @@ export default function InputForm() {
         <input
           className="form-control"
           type="number"
-          name="people"
           id="people"
+          name="people"
           min={1}
           required={true}
           onChange={handleChangeNum}

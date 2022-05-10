@@ -4,6 +4,7 @@ import { createTable } from "../utils/api";
 import TableForm from "./TableForm";
 import ErrorAlert from "../layout/ErrorAlert";
 
+//component that uses table form to create new tables in the app. Customers are seated in these table.
 export default function NewTable() {
   const initial = {
     table_name: "",
@@ -23,27 +24,27 @@ export default function NewTable() {
     history.goBack();
   };
 
-  useEffect(()=>{
-    if(submitted) {
+  useEffect(() => {
+    if (submitted) {
       const ac = new AbortController();
       async function create() {
-        setTablesErrors(false)
+        setTablesErrors(false);
         try {
-          const response = await createTable(formData, ac.signal)
-          history.push(`/dashboard`)
+          const response = await createTable(formData, ac.signal);
+          history.push(`/dashboard`);
           return response;
-        } catch(error) {
-          setTablesErrors(error)
-        } 
+        } catch (error) {
+          setTablesErrors(error);
+        }
       }
       create();
-      return () => ac.abort()
+      return () => ac.abort();
     }
-  }, [submitted, history, formData])
+  }, [submitted, history, formData]);
 
   return (
     <>
-    <ErrorAlert error={tablesErrors} />
+      <ErrorAlert error={tablesErrors} />
       <TableForm
         formData={formData}
         setFormData={setFormData}

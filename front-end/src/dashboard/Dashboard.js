@@ -16,6 +16,7 @@ import { listTables } from "../utils/api";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
+//this page showcase the main page of the app the dashboard
 function Dashboard() {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
@@ -28,7 +29,7 @@ function Dashboard() {
   if (!date) {
     date = today();
   }
-  // console.log(date)
+  
   const history = useHistory()
     const handleCancel = async (reservation_id) => {
         const ac = new AbortController();
@@ -44,6 +45,7 @@ function Dashboard() {
           return () => ac.abort()
         };
 
+
   useEffect(loadDashboard, [date]);
 
   //list all reservation on a given day
@@ -58,28 +60,29 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
-  // console.log(reservations)
   return (
     <main>
       <h1>Dashboard</h1>
-      {/* <div className="d-md-flex mb-3"> */}
-      {/* </div> */}
       <div className="row">
         <div className="table-responsive col-md-6">
-          <h4 className="d-flex justify-content-center">
+          <h4 className="d-flex justify-content-left">
             Reservations for {date}
           </h4>
           <ErrorAlert error={reservationsError} />
           <ErrorAlert error={tablesErrors} />
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-left">
             <ReservationButton date={date} />
           </div>
+          <ReservationTable reservations={reservations} />
           <ReservationTable reservations={reservations} handleCancel={handleCancel}/>
         </div>
-        <div className="table-responsive col-md-6" style={{ marginTop: "0px" }}>
+        <div
+          className="table-responsive col-md-6"
+          style={{ marginTop: "20px" }}
+        >
           <h4
-            className="d-flex justify-content-center"
-            style={{ marginBottom: "62px" }}
+            className="d-flex justify-content-left"
+            style={{ marginBottom: "10px", margin: "20px" }}
           >
             {" "}
             Assign Table

@@ -1,18 +1,17 @@
 import React from "react";
 
-export default function InvalidDateTime({error}) {
-    
-    if(error.length > 0) {
-    return (
+//generic function to alert of error message
+export default function InvalidDateTime({ errors = [] }) {
+  if (errors !== null)
+    if (errors.length) {
+      return (
         <div className="alert alert-danger">
-        <p>Please fix the following errors:</p>
-        {error.map((each, index) => (
-          <div key={index}>
-          <li>{each}</li>
-          </div>
-        ))}
-      </div>
-    )
-        }
-        return null;
+          Error:
+          {errors.map((error) => (
+            <p key={error.message}>{error.message}</p>
+          ))}
+        </div>
+      );
+    }
+  return null;
 }

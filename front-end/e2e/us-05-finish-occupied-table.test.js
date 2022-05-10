@@ -19,7 +19,7 @@ describe("US-05 - Finish an occupied table - E2E", () => {
 
   beforeAll(async () => {
     await fsPromises.mkdir("./.screenshots", { recursive: true });
-    setDefaultOptions({ timeout: 1000 });
+    setDefaultOptions({ timeout: 2500 });
     browser = await puppeteer.launch();
   });
 
@@ -126,7 +126,7 @@ describe("US-05 - Finish an occupied table - E2E", () => {
 
       await page.click(finishButtonSelector);
 
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(20000);
 
       await page.screenshot({
         path: ".screenshots/us-05-dashboard-finish-button-cancel-after.png",
