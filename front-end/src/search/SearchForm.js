@@ -14,6 +14,7 @@ export default function SearchForm({ onSubmit, formData, setFormData }) {
       <div>
         <input
           className="col-sm-4"
+        className="form-control col-7"
           id="mobile_number"
           type="search"
           name="mobile_number"
