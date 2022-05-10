@@ -103,6 +103,28 @@ async function tableAssignValidation(req, res, next) {
   }
   next();
 }
+function tableAvailable(req,res,next) {
+  if (res.locals.table.occupied === false) {
+    return next({
+      status: 400,
+      message: "Table is not occupied.",
+    });
+  }
+  if (!res.locals.table.reservation_id) {
+    next({
+      status: 400,
+      message: "Table is not occupied.",
+    });
+}
+next()
+}
+
+async function deleteOccupancy(req,res,next) {
+    const table_id = res.locals.table.table_id
+    const data = await service.deleteOccupancy(table_id)
+    console.log(data)
+    res.status(200).json({data})
+}
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
@@ -119,4 +141,7 @@ module.exports = {
     asyncErrorBoundary(tableAssignValidation),
     asyncErrorBoundary(updateTableStatus),
   ],
+  destroy:[asyncErrorBoundary(tableExists),
+    tableAvailable,
+  asyncErrorBoundary(deleteOccupancy)]
 };
