@@ -37,9 +37,8 @@ function Dashboard() {
               "Do you want to cancel this reservation? This cannot be undone."
           )
           if (result) {
-            history.go();
             const response = await reservationStatusCancelled(reservation_id, ac.signal);
-            // window.location.reload(false)
+            history.go();
             return response
           }
           return () => ac.abort()
@@ -73,7 +72,6 @@ function Dashboard() {
           <div className="d-flex justify-content-left">
             <ReservationButton date={date} />
           </div>
-          <ReservationTable reservations={reservations} />
           <ReservationTable reservations={reservations} handleCancel={handleCancel}/>
         </div>
         <div

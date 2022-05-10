@@ -10,14 +10,10 @@ export default function SearchPhoneNumber() {
   const initial = {
     mobile_number: "",
   };
-
-
-  const [formData, setFormData] = useState({ ...initial });
-  const [reservations, setReservations] = useState([]);
   
   //contains phone number
   const [formData, setFormData] = useState({...initial});
-  const [reservations, setReservations] = useState(null);
+  const [reservations, setReservations] = useState([]);
   const [errors, setErrors] = useState(null);
   const [submitted, setSubmitted] = useState(false);
 
@@ -41,15 +37,13 @@ export default function SearchPhoneNumber() {
             "Do you want to cancel this reservation? This cannot be undone."
         )
         if (result) {
-          // history.go();
         reservationStatusCancelled(reservation_id)
         .then(() => listReservations({ mobile_number }, ac.signal))
         .then(setReservations)
         .then(()=> setSubmitted(true))
-        // window.location.reload(false)
         .catch(setErrors);
         }
-        // history.go()
+        history.go()
         return () => ac.abort()
       };
   
@@ -61,32 +55,18 @@ export default function SearchPhoneNumber() {
       <SearchForm
         onSubmit={handleSubmission}
         formData={formData}
-        setFormData={setFormData}
-      />
+        setFormData={setFormData}/>
       {submitted && (
         <>
           {reservations.length >= 1 ? (
             <div>
-              <ReservationTable reservations={reservations} />
+              <ReservationTable reservations={reservations} handleCancel={handleCancel}/>
             </div>
           ) : (
             <h3>No Reservations Found</h3>
           )}
         </>
       )}
-      {submitted &&
-      <>
-      {reservations ? (
-        <div>
-          <ReservationTable
-            reservations={reservations}
-            handleCancel={handleCancel}
-            />
-        </div>
-      ) : (
-        <h3>No Reservations Found</h3>
-        )}
-        </>}
-    </>
-  );
+      </>
+  )
 }

@@ -22,7 +22,6 @@ export default function NewSeating() {
   useEffect(() => {
     const ac = new AbortController();
     async function read() {
-      //   setErrors(false)
       try {
         const response = await readReservation(
           Number(reservation_id),
@@ -42,7 +41,6 @@ export default function NewSeating() {
   useEffect(() => {
     const ac = new AbortController();
     async function list() {
-      //   setErrors(false)
       try {
         const response = await listTables(ac.signal);
         setTables(response);
@@ -76,9 +74,7 @@ export default function NewSeating() {
         <h4>
           {`# ${reservation.reservation_id} - ${reservation.first_name} ${
             reservation.last_name
-          } on ${reservation.reservation_date.slice(
-            0,
-            10
+          } on ${reservation.reservation_date.slice(0, 10
           )} at ${reservation.reservation_time.slice(0, 5)} for ${
             reservation.people
           }`}

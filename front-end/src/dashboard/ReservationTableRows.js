@@ -25,17 +25,6 @@ export default function ReservationTableRows({ reservation }) {
       <th scope="row">{reservation.reservation_id}</th>
       <td>{reservation.first_name}</td>
       <td>{reservation.last_name}</td>
-
-export default function ReservationTableRows(
-    {reservation, handleCancel},
-) {
-  const history = useHistory()
-  // if(reservation.status === 'finished' || reservation.status === 'cancelled') return null;
-    
-    return (
-        <tr key={reservation.reservation_id}>
-      <th scope='row'>{reservation.reservation_id}</th>
-      <td>{`${reservation.last_name}, ${reservation.first_name}`}</td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.reservation_date}</td>
