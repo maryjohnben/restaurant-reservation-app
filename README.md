@@ -27,7 +27,7 @@
 - DBeaver
 - CSS Bootstrap
 - Heroku
-### To view the deployed version please use this link: https://restaurant-reserve-app-client.herokuapp.com/dashboard
+#### To view the deployed version please use this link: https://restaurant-reserve-app-client.herokuapp.com/dashboard
 
 ##### Here is a view of the Dashboard.
 ##
