@@ -106,7 +106,7 @@ function isTimeFormatValid(req, res, next) {
     next();
   }
 }
-//make sure that date and time is not in the past if it is then an error will the thrown
+//make sure that date and time is not in the past if it is then an error will the thrown and let to proceed
 function isDatePast(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
   let today = new Date();

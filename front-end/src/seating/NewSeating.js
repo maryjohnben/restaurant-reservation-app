@@ -18,7 +18,7 @@ export default function NewSeating() {
   const history = useHistory();
   const { reservation_id } = useParams();
 
-  //Loads reservation.
+  //Loads reservation based on phone number provided
   useEffect(() => {
     const ac = new AbortController();
     async function read() {
