@@ -35,11 +35,15 @@ export default function SearchPhoneNumber() {
       "Do you want to cancel this reservation? This cannot be undone."
     );
     if (result) {
+      try {
       await reservationStatusCancelled(reservation_id, ac.signal);
       const response = await listReservations({ mobile_number }, ac.signal);
       setReservations(response);
       return response;
+    } catch(error) {
+      setErrors(error)
     }
+  }
     return () => ac.abort();
   };
 

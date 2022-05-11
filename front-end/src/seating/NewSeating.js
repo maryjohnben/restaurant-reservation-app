@@ -59,11 +59,11 @@ export default function NewSeating() {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // const ac = new AbortController();
-    updateTableStatus(formData.table_id, reservation.reservation_id)
+    const ac = new AbortController();
+    updateTableStatus(formData.table_id, reservation.reservation_id, ac.signal)
       .then(() => history.push("/dashboard"))
       .catch(setErrors);
-    // return () => ac.abort();
+    return () => ac.abort();
   };
 
   return (

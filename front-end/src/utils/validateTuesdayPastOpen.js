@@ -4,7 +4,7 @@ export function isDayTuesday(date) {
   if (userReservationDate.getUTCDay() === 2) {
     return "Restaurant is closed Tuesday. Please select another day.";
   } else {
-    return;
+    return null;
   }
 }
 
@@ -16,6 +16,6 @@ export function isClosedPast(reservation) {
   if (new Date() > userReservationDate) {
     return "Date and/or time cannot be in the past. Please select another date.";
   } else {
-    return;
+    return null;
   }
 }

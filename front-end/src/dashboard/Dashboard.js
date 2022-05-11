@@ -52,15 +52,19 @@ function Dashboard() {
       "Do you want to cancel this reservation? This cannot be undone."
     );
     if (result) {
+      try {
       const response = await reservationStatusCancelled(
         reservation_id,
         ac.signal
       );
       loadDashboard();
       return response;
+    } catch(error) {
+      setReservationsError(error)
     }
     return () => ac.abort();
-  };
+  }
+  }
   return (
     <main>
       <h1>Dashboard</h1>
@@ -93,7 +97,7 @@ function Dashboard() {
         </div>
       </div>
     </main>
-  );
+  )
 }
 
 export default Dashboard;

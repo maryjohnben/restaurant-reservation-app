@@ -5,7 +5,7 @@ export default function isTuesday(date) {
     if (day.getUTCDay() === 2) { 
       return "Restaurant is closed on Tuesday. Please select another day.";
     } else {
-      return;
+      return null;
     }
   }
   
