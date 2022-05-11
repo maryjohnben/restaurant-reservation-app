@@ -63,7 +63,7 @@ export default function SearchPhoneNumber() {
               />
             </div>
           ) : (
-            <h3>No Reservations Found</h3>
+            <h3>No reservations found</h3>
           )}
         </>
       )}

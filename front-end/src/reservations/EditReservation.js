@@ -132,7 +132,7 @@ export default function EditReservation() {
           reservation_id,
           ac.signal
         );
-        history.goBack();
+        history.push(`/dashboard?date=${formData.reservation_date}`);
         return response;
       } catch (error) {
         setError(error);

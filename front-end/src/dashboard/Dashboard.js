@@ -89,7 +89,7 @@ function Dashboard() {
           >
             Assign Table
           </h4>
-          <TableDisplay tables={tables} loadDashboard={loadDashboard} />
+          <TableDisplay tables={tables} loadDashboard={loadDashboard} setTablesErrors={setTablesErrors} />
         </div>
       </div>
     </main>

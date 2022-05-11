@@ -96,12 +96,6 @@ async function tableAssignValidation(req, res, next) {
 }
 //checks if table is free
 function tableAvailable(req, res, next) {
-  if (res.locals.table.occupied === false) {
-    return next({
-      status: 400,
-      message: "Table is not occupied.",
-    });
-  }
   if (!res.locals.table.reservation_id) {
     next({
       status: 400,
