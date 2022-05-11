@@ -12,9 +12,10 @@ import { listTables } from "../utils/api";
 /**
  * Defines the dashboard page.
  * @param date
- *  the date for which the user wants to view reservations.
+ *  the date for which the user wants to view the reservations.
  * @returns {JSX.Element}
  */
+
 //this page showcase the main page of the app the dashboard
 function Dashboard() {
   const [reservations, setReservations] = useState([]);
