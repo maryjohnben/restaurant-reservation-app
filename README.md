@@ -1,12 +1,14 @@
 # Full Stack Final Capstone
 
-# A project meant to assist restaurant with reservation. The App not just takes in reservation it can also keep track of table status and lets to update reservation and archieves finished and cancelled reservations.
+### A project meant to assist restaurant with reservation. The App not just takes in reservation it can also keep track of table status and lets to update reservation and archieves finished and cancelled reservations.
 
-### Installation
-### Fork and clone this repository.
-### Copy sample .env and add databases to the backend
-### Run npm install
-### npm start or npm run start:dev for development purposes.
+#### Installation
+#### Fork and clone this repository.
+#### Copy sample .env and add databases to the backend
+#### Run npm install
+#### npm start or npm run start:dev for development purposes.
+
+
 # Capstone: Restaurant Reservation System
 
 
