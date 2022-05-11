@@ -1,26 +1,21 @@
-import React, { useEffect } from "react";
-import { useHistory } from "react-router";
+import React from "react";
 import { deleteOccupancy } from "../utils/api";
 
 //form that showcases all the tables in the restaurant
 export default function TableDisplayRow({ table, loadDashboard }) {
 
-  const ac = new AbortController();
   const handleFinish = async (table_id) => {
+    const ac = new AbortController();
     const result = window.confirm(
       "Is this table ready to seat new guests? This cannot be undone."
     );
-    console.log(result, 'result')
     if (result) {
       const response = await deleteOccupancy(table_id, ac.signal);
-      console.log('fetch1')
-      const result = await loadDashboard()
-      console.log('fetch', result)
+      await loadDashboard()
       return response;
     }
+    return () => ac.abort();
   };
-  useEffect(()=>ac.abort())
-  // return () => ac.abort();
 
   return (
     <tr>

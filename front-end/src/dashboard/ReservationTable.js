@@ -10,7 +10,7 @@ export default function ReservationTable({ reservations, handleCancel }) {
       key={reservation.reservation_id}
     />
   ));
-  console.log(rows);
+
   return (
     <table className="table">
       <thead className="thead-dark">
@@ -23,7 +23,6 @@ export default function ReservationTable({ reservations, handleCancel }) {
           <th scope="col">People</th>
           <th scope="col">Status</th>
           <th scope="col">Seat?</th>
-          {/* <th scope="col">Options</th> */}
         </tr>
       </thead>
       <tbody>{rows}</tbody>

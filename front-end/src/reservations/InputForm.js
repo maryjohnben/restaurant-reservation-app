@@ -140,7 +140,6 @@ export default function InputForm() {
           id="mobile_number"
           required={true}
           placeholder="000-000-0000"
-          // pattern="([0-9]{3}-)?[0-9]{3}-[0-9]{4}"
           onChange={handleChange}
           value={formData.mobile_number}
         ></input>
@@ -152,7 +151,6 @@ export default function InputForm() {
           type="date"
           name="reservation_date"
           id="reservation_date"
-          // pattern="\d{4}-\d{2}-\d{2}"
           required={true}
           onChange={handleChange}
           value={formData.reservation_date}
@@ -165,7 +163,6 @@ export default function InputForm() {
           type="time"
           name="reservation_time"
           id="reservation_time"
-          // pattern="[0-9]{2}:[0-9]{2}"
           required={true}
           onChange={handleChange}
           value={formData.reservation_time}
