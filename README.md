@@ -1,7 +1,7 @@
 # Restaurant Reservation Application
 
 #### A project meant to assist restaurants with reservation and seating of customers. It can also keep track of table status and also lets the user make changes to reservation in case needed. 
-#### Some of the capabilities includes 
+### Some of the capabilities includes 
 - create and edit reservation
 - cancel reservation
 - create tables in the restaurant
@@ -29,7 +29,7 @@
 - Heroku
 #### To view the deployed version please use this link: https://restaurant-reserve-app-client.herokuapp.com/dashboard
 
-##### Here is a view of the Dashboard.
+### Here is a view of the Dashboard.
 ##
 
 ![Screenshot (344)](https://user-images.githubusercontent.com/90489864/167934478-acc3f4a6-ad53-4323-9207-f50926ba8e0d.png)
