@@ -8,10 +8,10 @@ const { createReservation, createTable } = require("./api");
 
 const baseURL = process.env.BASE_URL || "http://localhost:3000";
 
-const onPageConsole = (msg) =>
-  Promise.all(msg.args().map((event) => event.jsonValue())).then((eventJson) =>
-    console.log(`<LOG::page console ${msg.type()}>`, ...eventJson)
-  );
+const onPageConsole = (msg) => {}
+  // Promise.all(msg.args().map((event) => event.jsonValue())).then((eventJson) =>
+  //   console.log(`<LOG::page console ${msg.type()}>`, ...eventJson)
+  // );
 
 describe("US-05 - Finish an occupied table - E2E", () => {
   let page;
@@ -70,23 +70,26 @@ describe("US-05 - Finish an occupied table - E2E", () => {
       );
         console.log('checking containsOccuiped', containsOccupied)
       expect(containsOccupied).toBe(true);
-
+console.log(73)
       const finishButtonSelector = `[data-table-id-finish="${table.table_id}"]`;
+      console.log(finishButtonSelector)
       await page.waitForSelector(finishButtonSelector);
-
+      console.log(76)
       page.on("dialog", async (dialog) => {
         expect(dialog.message()).toContain(
           "Is this table ready to seat new guests?"
         );
         await dialog.accept();
       });
-
+      console.log(83)
       await page.click(finishButtonSelector);
-
+      console.log(85)
       await page.waitForResponse((response) => {
+        console.log(response, 123)
+        console.log(response.url(), 345)
         return response.url().endsWith(`/tables`);
       });
-
+      console.log(89)
       await page.screenshot({
         path: ".screenshots/us-05-dashboard-finish-button-after.png",
         fullPage: true,

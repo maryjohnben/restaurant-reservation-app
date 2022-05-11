@@ -2,9 +2,9 @@ import React from "react";
 import TableDisplayRow from "./TableDisplayRow-dashboard";
 
 //added data to table display row
-export default function TableDisplay({ tables }) {
+export default function TableDisplay({ tables, loadDashboard }) {
   const rows = tables.map((table) => (
-    <TableDisplayRow table={table} key={table.table_id} />
+    <TableDisplayRow table={table} key={table.table_id} loadDashboard={loadDashboard} />
   ));
 
   return (

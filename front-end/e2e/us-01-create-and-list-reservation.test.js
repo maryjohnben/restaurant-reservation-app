@@ -5,10 +5,10 @@ const fsPromises = fs.promises;
 
 const baseURL = process.env.BASE_URL || "http://localhost:3000";
 
-const onPageConsole = (msg) =>
-  Promise.all(msg.args().map((event) => event.jsonValue())).then((eventJson) =>
-    console.log(`<LOG::page console ${msg.type()}>`, ...eventJson)
-  );
+const onPageConsole = (msg) => {}
+//   Promise.all(msg.args().map((event) => event.jsonValue())).then((eventJson) =>
+//     console.log(`<LOG::page console ${msg.type()}>`, ...eventJson)
+  // );
 
 describe("US-01 - Create and list reservations - E2E", () => {
   let page;

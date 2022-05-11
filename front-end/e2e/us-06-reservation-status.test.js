@@ -45,7 +45,7 @@ describe("US-06 - Reservation status - E2E", () => {
         table_name: `#${Date.now().toString(10)}`,
         capacity: 99,
       });
-
+console.log()
       page = await browser.newPage();
       page.on("console", onPageConsole);
       await page.setViewport({ width: 1920, height: 1080 });
@@ -54,19 +54,19 @@ describe("US-06 - Reservation status - E2E", () => {
       });
       await page.reload({ waitUntil: "networkidle0" });
     });
-
+console.log(57)
     test("/dashboard displays status", async () => {
       await page.screenshot({
         path: ".screenshots/us-06-dashboard-displays-status.png",
         fullPage: true,
       });
-
+      console.log(63)
       const containsBooked = await containsText(
         page,
         `[data-reservation-id-status="${reservation.reservation_id}"]`,
         "booked"
       );
-
+      console.log(69)
       expect(containsBooked).toBe(true);
     });
 

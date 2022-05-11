@@ -54,6 +54,7 @@ function Dashboard() {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+
     listTables(abortController.signal).then(setTables).catch(setTablesErrors);
     //add in tables data
     return () => abortController.abort();
@@ -82,10 +83,9 @@ function Dashboard() {
             className="d-flex justify-content-left"
             style={{ marginBottom: "10px", margin: "20px" }}
           >
-            {" "}
             Assign Table
           </h4>
-          <TableDisplay tables={tables} />
+          <TableDisplay tables={tables} loadDashboard={loadDashboard}/>
         </div>
       </div>
     </main>
