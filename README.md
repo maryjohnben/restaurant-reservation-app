@@ -13,9 +13,9 @@
 ### To Run Locally 
 #### Installation: 
 - *Fork* and *clone* this repository.
-- Copy sample .env and add databases to the backend. elephantSQL is used in this project as database.
-- Run npm install
-- Run npm start or npm run start:dev for development purposes.
+- *Copy* sample .env and add databases to the backend. elephantSQL is used in this project as database.
+- Run *npm install*
+- Run *npm start* or *npm run start:dev* for development purposes.
 
 ### Technologies Used:
 - JavaScript
