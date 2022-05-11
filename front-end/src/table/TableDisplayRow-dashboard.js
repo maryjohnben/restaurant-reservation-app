@@ -3,7 +3,6 @@ import { deleteOccupancy } from "../utils/api";
 
 //form that showcases all the tables in the restaurant
 export default function TableDisplayRow({ table, loadDashboard }) {
-
   const handleFinish = async (table_id) => {
     const ac = new AbortController();
     const result = window.confirm(
@@ -11,7 +10,7 @@ export default function TableDisplayRow({ table, loadDashboard }) {
     );
     if (result) {
       const response = await deleteOccupancy(table_id, ac.signal);
-      await loadDashboard()
+      await loadDashboard();
       return response;
     }
     return () => ac.abort();

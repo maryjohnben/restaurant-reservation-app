@@ -91,7 +91,6 @@ export default function InputForm() {
   };
   function submitHandler(event) {
     event.preventDefault();
-    event.stopPropagation();
 
     const reservationErrors = validate(formData);
 

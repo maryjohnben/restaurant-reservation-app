@@ -59,11 +59,11 @@ export default function NewSeating() {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const ac = new AbortController();
-    updateTableStatus(formData.table_id, reservation.reservation_id, ac.signal)
+    // const ac = new AbortController();
+    updateTableStatus(formData.table_id, reservation.reservation_id)
       .then(() => history.push("/dashboard"))
       .catch(setErrors);
-    return () => ac.abort();
+    // return () => ac.abort();
   };
 
   return (
@@ -74,7 +74,9 @@ export default function NewSeating() {
         <h4>
           {`# ${reservation.reservation_id} - ${reservation.first_name} ${
             reservation.last_name
-          } on ${reservation.reservation_date.slice(0, 10
+          } on ${reservation.reservation_date.slice(
+            0,
+            10
           )} at ${reservation.reservation_time.slice(0, 5)} for ${
             reservation.people
           }`}

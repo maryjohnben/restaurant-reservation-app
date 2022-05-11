@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationTable from "../dashboard/ReservationTable";
 import { listReservations, reservationStatusCancelled } from "../utils/api";
@@ -10,9 +9,9 @@ export default function SearchPhoneNumber() {
   const initial = {
     mobile_number: "",
   };
-  
+
   //contains phone number
-  const [formData, setFormData] = useState({...initial});
+  const [formData, setFormData] = useState({ ...initial });
   const [reservations, setReservations] = useState([]);
   const [errors, setErrors] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -29,24 +28,21 @@ export default function SearchPhoneNumber() {
     return () => ac.abort();
   };
 
-  const history = useHistory()
   const handleCancel = async (reservation_id) => {
-      const ac = new AbortController();
-      const  mobile_number  = formData.mobile_number;
-        const result = window.confirm(
-            "Do you want to cancel this reservation? This cannot be undone."
-        )
-        if (result) {
-        reservationStatusCancelled(reservation_id)
-        .then(() => listReservations({ mobile_number }, ac.signal))
-        .then(setReservations)
-        .then(()=> setSubmitted(true))
-        .catch(setErrors);
-        }
-        history.go()
-        return () => ac.abort()
-      };
-  
+    const ac = new AbortController();
+    const mobile_number = formData.mobile_number;
+    const result = window.confirm(
+      "Do you want to cancel this reservation? This cannot be undone."
+    );
+    if (result) {
+      await reservationStatusCancelled(reservation_id, ac.signal);
+      const response = await listReservations({ mobile_number }, ac.signal);
+      setReservations(response);
+      return response;
+    }
+    return () => ac.abort();
+  };
+
   //pulls data if number valid else no reservation found.
   return (
     <>
@@ -55,18 +51,22 @@ export default function SearchPhoneNumber() {
       <SearchForm
         onSubmit={handleSubmission}
         formData={formData}
-        setFormData={setFormData}/>
+        setFormData={setFormData}
+      />
       {submitted && (
         <>
           {reservations.length >= 1 ? (
             <div>
-              <ReservationTable reservations={reservations} handleCancel={handleCancel}/>
+              <ReservationTable
+                reservations={reservations}
+                handleCancel={handleCancel}
+              />
             </div>
           ) : (
             <h3>No Reservations Found</h3>
           )}
         </>
       )}
-      </>
-  )
+    </>
+  );
 }

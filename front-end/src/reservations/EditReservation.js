@@ -110,12 +110,13 @@ export default function EditReservation() {
 
     return errors;
   }
+
   const cancelHandler = () => {
-    history.goBack();
+    history.go(-1);
   };
+
   function submitHandler(event) {
     event.preventDefault();
-    event.stopPropagation();
 
     const reservationErrors = validate(formData);
 

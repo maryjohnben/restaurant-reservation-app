@@ -4,7 +4,11 @@ import TableDisplayRow from "./TableDisplayRow-dashboard";
 //added data to table display row
 export default function TableDisplay({ tables, loadDashboard }) {
   const rows = tables.map((table) => (
-    <TableDisplayRow table={table} key={table.table_id} loadDashboard={loadDashboard} />
+    <TableDisplayRow
+      table={table}
+      key={table.table_id}
+      loadDashboard={loadDashboard}
+    />
   ));
 
   return (

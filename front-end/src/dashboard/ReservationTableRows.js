@@ -1,30 +1,14 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
-import { reservationStatusCancelled } from "../utils/api";
+import { Link } from "react-router-dom";
 
 //row that populates the reservation table on the dashbaord. This component also incorporates seat, edit and cancel as needed.
-export default function ReservationTableRows({ reservation }) {
-  const history = useHistory();
-  const handleCancel = async (reservation_id) => {
-    const ac = new AbortController();
-    const result = window.confirm(
-      "Do you want to cancel this reservation? This cannot be undone."
-    );
-    if (result) {
-      history.go();
-      const response = await reservationStatusCancelled(
-        reservation_id,
-        ac.signal
-      );
-      return response;
-    }
-    return () => ac.abort();
-  };
+export default function ReservationTableRows({ reservation, handleCancel }) {
   return (
     <tr>
       <th scope="row">{reservation.reservation_id}</th>
-      <td>{reservation.first_name}</td>
-      <td>{reservation.last_name}</td>
+      <td>
+        {reservation.first_name} {reservation.last_name}
+      </td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.reservation_date}</td>
