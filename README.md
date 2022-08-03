@@ -6,7 +6,7 @@
 - cancel reservation
 - create tables in the restaurant
 - assign each table to customers based on party size
-- free table once customer is finished
+- free the table once customer is done
 - search reservation data using phone number
 - archives data that are no longer active
 
