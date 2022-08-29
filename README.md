@@ -1,6 +1,6 @@
 # Restaurant Reservation Application
 
-A project developed to assist restaurants with reservation and seating of customers. App can also keep track of table status and let the user make necessary changes to the reservations as needed. Once the customer is seated the data can be archived and later retrieved using the customer's phone number as desired. The app is mainly expected to be used by the restaurants rather than directly by the customer because of the table assignment availability. 
+A project developed to assist restaurants with reservation and seating of customers. App can also keep track of table status and let the user make necessary changes to the reservations as needed. Once the customer is seated the data can be archived and later retrieved using the customer's phone number as desired. The app is mainly expected to be used by the restaurants rather than directly by the customer because of the table assignment availability.
 
 ### Some of the capabilities includes: 
 - create and edit reservation
