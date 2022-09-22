@@ -10,6 +10,7 @@ A project developed to assist restaurants with reservation and seating of custom
 - free the table once customer is done
 - search reservation data using phone number
 - archives data that are no longer active
+<p>&nbsp</p>
 
 ### To Run Locally: 
 #### Installation: 
@@ -17,6 +18,7 @@ A project developed to assist restaurants with reservation and seating of custom
 - *Copy* sample .env and add databases to the backend. ElephantSQL is used in this project as database.
 - Run *npm install*
 - Run *npm start* or *npm run start:dev* for development purposes.
+<p>&nbsp</p>
 
 ### Technologies Used:
 - JavaScript ES6
@@ -32,6 +34,7 @@ A project developed to assist restaurants with reservation and seating of custom
 - Heroku - deployment
 - Puppeteer - testing
 - Jest - testing
+<p>&nbsp</p>
 
 #### To view the deployed version of the app please use this link: https://restaurant-reserve-app-client.herokuapp.com/dashboard
 
