@@ -16,8 +16,8 @@ A project developed to assist restaurants with reservation and seating of custom
 #### Installation: 
 - *Fork* and *clone* this repository.
 - *Copy* sample .env and add databases to the backend. ElephantSQL is used in this project as database.
-- Run *npm install*
-- Run *npm start* or *npm run start:dev* for development purposes.
+- Run *npm install* in the terminal.
+- Run *npm start* to start the project locally or *npm run start:dev* for development purposes.
 <p>&nbsp</p>
 
 ### Technologies Used:
