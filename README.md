@@ -37,7 +37,7 @@ A full-stack project developed from scratch to assist restaurants with reservati
 - Jest - testing
 <p>&nbsp</p>
 
-#### To view the deployed version of the app please use this new link: https://restaurant-reservation-app-frontend.onrender.com/dashboard
+#### To view the deployed version of the app please use this new link: https://restaurant-reservation-app-frontend.onrender.com
 ### Here is a view of the Dashboard:
 ##
 
