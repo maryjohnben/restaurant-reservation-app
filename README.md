@@ -1,4 +1,4 @@
-**completed redeploying the app using Render
+**completed redeploying the app from Heroku to Render
 
 # Restaurant Reservation Application
 
